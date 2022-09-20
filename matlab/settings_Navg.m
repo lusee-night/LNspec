@@ -1,3 +1,3 @@
 function Navg = settings_Navg ()
-    Navg = 16;
+    Navg = 32;
 end

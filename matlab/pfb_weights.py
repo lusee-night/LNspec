@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import numpy as np
-Nfft = 256
+Nfft = 4096
 Ntaps = 4
 fname = f"get_pfb_weights_{Nfft}_{Ntaps}.m"
 f = open(fname,'w')

@@ -1,18 +1,51 @@
 clear spectrometer;
 clear pk_accum;
 
-npk = 0;
 t = 0;
 dt = 1;
-omega = 0.25;
-while npk<2;
-    sample = int16(1000*sin(omega*t*2*pi));
-    [pk, ready] = spectrometer(sample);
+omega1 = 20;
+omega2 = 40;
+omegax = 50;
+count = 1;
+Npk = 0;
+pk=zeros(4,settings_Nchan);
+clf;
+samples = randn(20000);
+
+
+while Npk<2;
+    sample1 = int16(28000*sin(omega1*t/settings_Nfft*2*pi)+2000*sin(omegax*t/settings_Nfft*2*pi));
+    sample2 = int16(28000*sin(omega2*t/settings_Nfft*2*pi)+2000*cos(omegax*t/settings_Nfft*2*pi));
+    %sample1 = 10000*samples(t+1);
+    %sample2 = 10000*samples(t+10);
+    [pks, ready] = spectrometer(sample1,sample2);
     if ready
-        npk = npk + 1;
+        pk(:,count) = pks;
+        count = count + 1;
+        if (count>settings_Nchan)
+            count = 1;
+            Npk = Npk + 1;
+            disp(Npk);
+        end
     end
     t = t + dt;
+    %if (t<256)
+    %    plot(t,sample1,'ro');
+    %    plot(t,sample2,'bo');
+    %end
 end
-freq = 0:double(settings_Nfft)/2-1;
-freq = freq/double(settings_Nfft);
-%semilogy(freq,pk,'bo-')
+
+%freq = 0:double(settings_Nfft)/2-1;
+%freq = freq/double(settings_Nfft);
+freq = 1:settings_Nchan;
+pk1 = (pk(1,:) + pk(2,:) + 2 * pk(3,:))/4.0
+pk2 = (pk(1,:) + pk(2,:) - 2 * pk(3,:))/4.0
+pkXR = pk(4,:)/2;
+pkXI = (pk(1,:)-pk(2,:))/4.0
+clf;
+
+plot(freq,pk1,'bo-');
+hold on
+plot(freq,pk2,'ro-');
+%semilogy(freq,pk2,'ro-');
+

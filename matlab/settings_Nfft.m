@@ -1,3 +1,3 @@
 function Nfft = settings_Nfft ()
-    Nfft=256;
+    Nfft=4096;
 end
