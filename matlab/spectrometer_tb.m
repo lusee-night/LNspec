@@ -9,14 +9,14 @@ omegax = 50;
 count = 1;
 Npk = 0;
 pk=zeros(4,settings_Nchan);
-clf;
-samples = randn(20000);
+pfb_weights = get_pfb_weights(settings_Nfft, settings_Ntaps);
 
+clf;
 
 while Npk<2;
     sample1 = int16(28000*sin(omega1*t/settings_Nfft*2*pi)+2000*sin(omegax*t/settings_Nfft*2*pi));
     sample2 = int16(28000*sin(omega2*t/settings_Nfft*2*pi)+2000*cos(omegax*t/settings_Nfft*2*pi));
-    [out_re, out_im, ready_pfb] = pfb_engine(sample1,sample2);
+    [out_re, out_im, ready_pfb] = pfb_engine(sample1,sample2,pfb_weights);
     fft_out = complex(out_re, out_im);
     [pks,ready] =  pk_accum(fft_out, ready_pfb);
 

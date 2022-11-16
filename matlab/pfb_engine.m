@@ -1,5 +1,5 @@
-function [out_re, out_im, ready] = pfb_engine (sample1, sample2)
-    persistent c  buf1 buf2 tout pfb_weights dfft bc;
+function [out_re, out_im, ready] = pfb_engine (sample1, sample2, pfb_weights)
+    persistent c  buf1 buf2 tout dfft bc;
     coder.extrinsic('get_pfb_weights_4096_4');
     coder.extrinsic('settings_Nfft');
 
@@ -9,7 +9,7 @@ function [out_re, out_im, ready] = pfb_engine (sample1, sample2)
         c = uint16(0); % we use 0-ordered for c
         tout = coder.const(settings_Ntaps);
         %pfb_weights = coder.load("weights/pfb_weights_"+settings_Nfft+"_"+settings_Ntaps+".dat");
-        pfb_weights = coder.load("weights/pfb_weights_4096_4.dat");
+        %pfb_weights = coder.load("weights/pfb_weights_4096_4.dat");
         dfft=dsphdl.FFT('FFTLength',4096,'BitReversedOutput',false);
         bc = 0;
     end
