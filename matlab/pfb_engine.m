@@ -1,4 +1,4 @@
-function [outpk, ready] = spectrometer (sample1, sample2)
+function [out_re, out_im, ready] = pfb_engine (sample1, sample2)
     persistent c  buf1 buf2 tout pfb_weights dfft bc;
     coder.extrinsic('get_pfb_weights_4096_4');
     coder.extrinsic('settings_Nfft');
@@ -8,8 +8,8 @@ function [outpk, ready] = spectrometer (sample1, sample2)
         buf2 = zeros(coder.const(settings_Ntaps), coder.const(settings_Nfft));
         c = uint16(0); % we use 0-ordered for c
         tout = coder.const(settings_Ntaps);
-        pfb_weights = coder.const(get_pfb_weights_4096_4(settings_Nfft,settings_Ntaps));
-        %dfft=dsphdl.FFT('FFTLength',coder.const(settings_Nfft),'BitReversedOutput',false);
+        %pfb_weights = coder.load("weights/pfb_weights_"+settings_Nfft+"_"+settings_Ntaps+".dat");
+        pfb_weights = coder.load("weights/pfb_weights_4096_4.dat");
         dfft=dsphdl.FFT('FFTLength',4096,'BitReversedOutput',false);
         bc = 0;
     end
@@ -25,11 +25,12 @@ function [outpk, ready] = spectrometer (sample1, sample2)
         end
     end
     val = complex(buf1(tout,k), buf2(tout,k));
-    [fft_out, fft_valid] = dfft(val', true);
+    [fft_out, ready] = dfft(val', true);
+    out_re = real(fft_out);
+    out_im = imag(fft_out);
+
     buf1(tout,k)=0.0;
     buf2(tout,k)=0.0;
-
-    %fprintf ("%i %i %f\n",bc,fft_valid,fft_out)
     
     if k==coder.const(settings_Nfft)
         tout = tout - 1;
@@ -38,7 +39,6 @@ function [outpk, ready] = spectrometer (sample1, sample2)
         end
     end
     c = mod(c+1, coder.const(settings_Ntot));
-    [outpk,ready] =  pk_accum(fft_out, fft_valid);
     bc = bc + 1;
 end
 
