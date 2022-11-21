@@ -10,20 +10,20 @@ function [out_re, out_im, ready] = pfb_engine (sample1, sample2)
         tout = coder.const(settings_Ntaps);
         %pfb_weights = coder.load("weights/pfb_weights_"+settings_Nfft+"_"+settings_Ntaps+".dat");
         %pfb_weights = coder.load("weights/pfb_weights_4096_4.dat");
-        pfb_weights = coder.const(get_pfb_weights_4096_4(4096, 4));
+        %pfb_weights = coder.const(get_pfb_weights_4096_4(4096, 4));
+        %pfb_weights = coder.const(-0.00018313896);
         dfft=dsphdl.FFT('FFTLength',4096,'BitReversedOutput',false);
         bc = 0;
     end
     k = mod(c,coder.const(settings_Nfft))+1;
-    l = c+1;
     for i=1:coder.const(settings_Ntaps)
-        buf1(i,k) = buf1(i,k) + sample1 * pfb_weights(l);
-        buf2(i,k) = buf2(i,k) + sample2 * pfb_weights(l);
+        buf1(i,k) = buf1(i,k) + sample1 * -0.00018313896;
+        buf2(i,k) = buf2(i,k) + sample2 * -0.00012345678;
         %buf (i,k) = buf(i,k) + 1 * l;
-        l = l + coder.const(settings_Nfft);
-        if (l>coder.const(settings_Ntot))
-            l = mod(l,coder.const(settings_Ntot));
-        end
+%         l = l + coder.const(settings_Nfft);
+%         if (l>coder.const(settings_Ntot))
+%             l = mod(l,coder.const(settings_Ntot));
+%         end
     end
     val = complex(buf1(tout,k), buf2(tout,k));
     [fft_out, ready] = dfft(val', true);
