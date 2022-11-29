@@ -1,5 +1,4 @@
-clear spectrometer;
-clear pk_accum;
+clear all;
 
 t = 0;
 dt = 1;
@@ -10,15 +9,20 @@ count = 1;
 Npk = 0;
 pk=zeros(4,settings_Nchan);
 clf;
-samples = randn(20000);
+
+dfft=dsphdl.FFT('FFTLength',4096,'BitReversedOutput',false);
 
 
 while Npk<2;
     sample1 = int16(28000*sin(omega1*t/settings_Nfft*2*pi)+2000*sin(omegax*t/settings_Nfft*2*pi));
     sample2 = int16(28000*sin(omega2*t/settings_Nfft*2*pi)+2000*cos(omegax*t/settings_Nfft*2*pi));
-    %sample1 = 10000*samples(t+1);
-    %sample2 = 10000*samples(t+10);
-    [pks, ready] = spectrometer(sample1,sample2);
+
+    [w1,w2,w3,w4] = weight_streamer();
+    acc1 = convolver(sample1, w1, w2, w3, w4);
+    acc2 = convolver(sample2, w1, w2, w3, w4);
+    val = complex(acc1,acc2);
+    [fft_out, fft_valid] = dfft(val', true);
+    [pks, ready] = pk_accum(fft_out,fft_valid);
     if ready
         pk(:,count) = pks;
         count = count + 1;
@@ -29,17 +33,12 @@ while Npk<2;
         end
     end
     t = t + dt;
-    %if (t<256)
-    %    plot(t,sample1,'ro');
-    %    plot(t,sample2,'bo');
-    %end
 end
 
-%freq = 0:double(settings_Nfft)/2-1;
-%freq = freq/double(settings_Nfft);
+
 freq = 1:settings_Nchan;
-pk1 = (pk(1,:) + pk(2,:) + 2 * pk(3,:))/4.0
-pk2 = (pk(1,:) + pk(2,:) - 2 * pk(3,:))/4.0
+pk1 = (pk(1,:) + pk(2,:) + 2 * pk(3,:))/4.0;
+pk2 = (pk(1,:) + pk(2,:) - 2 * pk(3,:))/4.0;
 pkXR = pk(4,:)/2;
 pkXI = (pk(1,:)-pk(2,:))/4.0
 clf;
