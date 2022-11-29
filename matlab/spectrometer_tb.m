@@ -10,9 +10,6 @@ Npk = 0;
 pk=zeros(4,settings_Nchan);
 clf;
 
-dfft=dsphdl.FFT('FFTLength',4096,'BitReversedOutput',false);
-
-
 while Npk<2;
     sample1 = int16(28000*sin(omega1*t/settings_Nfft*2*pi)+2000*sin(omegax*t/settings_Nfft*2*pi));
     sample2 = int16(28000*sin(omega2*t/settings_Nfft*2*pi)+2000*cos(omegax*t/settings_Nfft*2*pi));
@@ -21,7 +18,7 @@ while Npk<2;
     acc1 = convolver(sample1, w1, w2, w3, w4);
     acc2 = convolver(sample2, w1, w2, w3, w4);
     val = complex(acc1,acc2);
-    [fft_out, fft_valid] = dfft(val', true);
+    [fft_out, fft_valid] = sfft(val')
     [pks, ready] = pk_accum(fft_out,fft_valid);
     if ready
         pk(:,count) = pks;
