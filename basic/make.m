@@ -11,4 +11,5 @@ fixptcfg.LaunchNumericTypesReport = true;
 % Create an 'hdl' config with default settings
 hdlcfg = coder.config('hdl');
 hdlcfg.TestBenchName = 'variance_tb';
+hdlcfg.GenerateHDLTestBench = true;
 codegen -float2fixed fixptcfg -config hdlcfg variance_hdl
