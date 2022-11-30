@@ -10,6 +10,7 @@ fixptcfg.LaunchNumericTypesReport = true;
 % Create an 'hdl' config with default settings
 hdlcfg = coder.config('hdl');
 hdlcfg.TestBenchName = 'variance_tb';
+hdlcfg.GenerateHDLTestBench = true;
 %codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),0,0,0,0} convolver
 %codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft 
