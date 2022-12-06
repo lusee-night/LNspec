@@ -19,6 +19,8 @@ hdlcfg.GenerateHDLTestBench = true;
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft 
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),true} correlate
 codegen -float2fixed fixptcfg -config hdlcfg -args {0.1, 0.1, 0.1, 0.1, int16(1), true} average
+%codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
+
 
 
 

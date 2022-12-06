@@ -15,19 +15,26 @@ weight_fold1 = @wf1.process;
 wf2 = weight_fold; 
 weight_fold2 = @wf2.process;
 
+integrated = false;
+
 while Npk<2;
     sample1 = int16(28000*sin(omega1*t/settings_Nfft*2*pi)+2000*sin(omegax*t/settings_Nfft*2*pi));
     sample2 = int16(28000*sin(omega2*t/settings_Nfft*2*pi)+2000*cos(omegax*t/settings_Nfft*2*pi));
 
-    [w1,w2,w3,w4] = weight_streamer();
-    acc1 = weight_fold1(sample1, w1, w2, w3, w4);
-    acc2 = weight_fold2(sample2, w1, w2, w3, w4);
-    
-    val = complex(acc1,acc2);
-    [fft_out, fft_valid] = sfft(val');
+    if (integrated)
+        [pks, ready] = spectrometer(sample1,sample2);
+    else
+        [w1,w2,w3,w4] = weight_streamer();
+        acc1 = weight_fold1(sample1, w1, w2, w3, w4);
+        acc2 = weight_fold2(sample2, w1, w2, w3, w4);
+        
+        val = complex(acc1,acc2);
+        [fft_out, fft_valid] = sfft(val');
 
-    [P1,P2,PX,PR, bin, cready] = correlate(fft_out,fft_valid);
-    [pks, ready] = average(P1,P2,PX,PR, bin, cready);
+        [P1,P2,PX,PR, bin, cready] = correlate(fft_out,fft_valid);
+        [pks, ready] = average(P1,P2,PX,PR, bin, cready);
+    end
+    
     if ready
         pk(:,count) = pks;
         count = count + 1;
