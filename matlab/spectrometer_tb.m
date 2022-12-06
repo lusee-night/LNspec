@@ -26,8 +26,8 @@ while Npk<2;
     val = complex(acc1,acc2);
     [fft_out, fft_valid] = sfft(val');
 
-    [P1,P2,PX,PR, bin] = correlate(fft_out,fft_valid);
-    [pks, ready] = average(P1,P2,PX,PR, bin);
+    [P1,P2,PX,PR, bin, cready] = correlate(fft_out,fft_valid);
+    [pks, ready] = average(P1,P2,PX,PR, bin, cready);
     if ready
         pk(:,count) = pks;
         count = count + 1;

@@ -1,14 +1,15 @@
-function [P1,P2,PR,PI, bin] = correlate(fft_val, fft_valid)
+function [P1,P2,PR,PI, bin, ready] = correlate(fft_val, fft_valid)
     persistent buf count  Nac fwd accum outbuf stream;
     if isempty(count)
-        count = 0;
+        count = int16(0);
         Nac = 0;
         stream = 0;
         fwd = true;
         buf = complex(zeros(1,coder.const(settings_Nchan)));
     end
 
-    bin = -1;
+    ready = false;
+    bin = int16(0);
     P1 = 0;
     P2 = 0;
     PR = 0;
@@ -22,14 +23,14 @@ function [P1,P2,PR,PI, bin] = correlate(fft_val, fft_valid)
             else
                 ready = true;
                 fft_val_b = buf(count);
-                bin = count;
+                bin = int16(count);
                 P1 = real(fft_val_b * conj(fft_val_b));
                 P2 = real(fft_val*conj(fft_val));
                 cross = fft_val_b*fft_val;
                 PR = real(cross);
                 PI = imag (cross);
             end
-            if count==coder.const(settings_Nchan)
+            if count==coder.const(int16(settings_Nchan))
                 fwd = false;
             end
         end
