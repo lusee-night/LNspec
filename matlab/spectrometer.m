@@ -8,7 +8,7 @@ function [pks, ready] = spectrometer (sample1, sample2)
     [fft_out, fft_valid] = sfft(val');
     
     [P1,P2,PX,PR, bin, cready] = correlate(fft_out,fft_valid);
-    [pks, ready] = average(P1,P2,PX,PR, bin, cready);
+    [pks, ready] = average2(P1,P2,PX,PR, bin, cready);
 
 end
 
