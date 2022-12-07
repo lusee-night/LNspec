@@ -5,7 +5,7 @@ function [P1,P2,PR,PI, bin, ready] = correlate(fft_val, fft_valid)
         Nac = 0;
         stream = 0;
         fwd = true;
-        buf = complex(zeros(1,coder.const(settings_Nchan)));
+        buf = complex(zeros(1,2048));
     end
 
     ready = false;
@@ -15,36 +15,21 @@ function [P1,P2,PR,PI, bin, ready] = correlate(fft_val, fft_valid)
     PR = 0;
     PI = 0;
 
-    if fft_valid
-        % we skip first bin as it k=0 value
-        if count>0
-            if fwd
-                buf(count) = fft_val;
-            else
-                ready = true;
-                fft_val_b = buf(count);
-                bin = int16(count);
-                P1 = real(fft_val_b * conj(fft_val_b));
-                P2 = real(fft_val*conj(fft_val));
-                cross = fft_val_b*fft_val;
-                PR = real(cross);
-                PI = imag (cross);
-            end
-            if count==coder.const(int16(settings_Nchan))
-                fwd = false;
-            end
-        end
-        if fwd
-            count = count + 1;
-        else
-            count = count - 1;
-            if count == 0
-                fwd = true;
-                Nac = Nac + 1;
-                %disp(Nac);
-            end
-        end
+    if fft_valid & (count>0) & (count<=2048) 
+        buf(count) = fft_val;
     end
-    
+    if fft_valid & (count>2048) 
+        ready = true;
+        bin = int16(int16(4096)-count);
+        fft_val_b = buf(bin);
+        P1 = real(fft_val_b * conj(fft_val_b));
+        P2 = real(fft_val*conj(fft_val));
+        cross = fft_val_b*fft_val;
+        PR = real(cross);
+        PI = imag (cross);
+    end
+    if fft_valid
+        count = mod(count + 1, 4096);
+    end
 end
 

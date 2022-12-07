@@ -14,10 +14,10 @@ function [outpk,ready_out] = average(P1,P2,PR,PI, count, ready_in)
         accum(4,count) = accum(4,count) + PI;
     end
     
-    if (count == 1)
+    if ready_in & (count == 1)
         Nac = Nac + 1;
         if (Nac == coder.const(settings_Navg));
-            outbuf = accum/coder.const(settings_Navg);
+            outbuf = accum;
             stream = 1;
             Nac = 0;
             accum = zeros(4,coder.const(settings_Nchan));
