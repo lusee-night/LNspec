@@ -3,7 +3,7 @@ function [outpk,ready_out] = average24(P1, count, ready_in)
 
     if isempty(Nac)
         Nac = 0;
-        P1A = zeros(2048);
+        P1A = zeros(1,2048);
         stream = 0;
     end
 
