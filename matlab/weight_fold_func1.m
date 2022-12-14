@@ -14,6 +14,12 @@ function val = weight_fold_func1 (sample, w1,w2,w3,w4 )
     val = buf1(tout,c);
     buf1 (tout,c) = 0.0;
             
+    % if (mod(c,4096)==401)
+    %     disp([sample,val,tout])
+    %     disp([w1,w2,w3,w4])
+    % end
+
+
     c = c+1;
     if c==4097
         c = uint16(1);

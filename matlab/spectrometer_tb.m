@@ -10,9 +10,13 @@ Npk = 0;
 pk=zeros(4,settings_Nchan);
 clf;
 
+samples1 = read_samples('samples/Raw_data_ADC_A_6MHz');
+samples2 = read_samples('samples/Raw_data_ADC_B_1MHz');
+
+
 while Npk<2;
-    sample1 = int16(28000*sin(omega1*t/settings_Nfft*2*pi)+2000*sin(omegax*t/settings_Nfft*2*pi));
-    sample2 = int16(28000*sin(omega2*t/settings_Nfft*2*pi)+2000*cos(omegax*t/settings_Nfft*2*pi));
+    sample1 = int16(28000*sin(0.4+omega1*t/settings_Nfft*2*pi)+2000*sin(0.9+omegax*t/settings_Nfft*2*pi));
+    sample2 = int16(28000*sin(0.7+omega2*t/settings_Nfft*2*pi)+2000*cos(0.9+omegax*t/settings_Nfft*2*pi));
 
     [pks, ready] = spectrometer(sample1,sample2);
     
@@ -28,7 +32,7 @@ while Npk<2;
     t = t + dt;
 end
 
-
+disp(t)
 freq = 1:settings_Nchan;
 pk1 = (pk(1,:) + pk(2,:) + 2 * pk(3,:))/4.0;
 pk2 = (pk(1,:) + pk(2,:) - 2 * pk(3,:))/4.0;
