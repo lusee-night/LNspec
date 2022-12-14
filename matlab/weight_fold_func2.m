@@ -1,32 +1,22 @@
 function val = weight_fold_func2 (sample, w1,w2,w3,w4 )
-    persistent buf1 c tout
+    persistent buf1 ndx
     if isempty(buf1)
-            buf1 = zeros(4, 4096);
-            c = uint16(1); % we use 0-ordered for c
-            tout = uint8(4);
+        buf1 = zeros(1, 16384);
+        ndx  = 0;
     end
 
-    buf1(1,c) = buf1(1,c) + sample * w1;
-    buf1(2,c) = buf1(2,c) + sample * w2;
-    buf1(3,c) = buf1(3,c) + sample * w3;
-    buf1(4,c) = buf1(4,c) + sample * w4;
-            
-    val = buf1(tout,c);
-    buf1 (tout,c) = 0.0;
-            
-    % if (mod(c,4096)==401)
-    %     disp([sample,val,tout])
-    %     disp([w1,w2,w3,w4])
-    % end
+    c = mod(ndx,4096)+1;
+    w = [w4 w3 w2 w1];
+    for i=1:4
+        buf1(c+4096*(i-1)) = buf1(c+4096*(i-1)) + sample*w(i);
+    end
 
-
-    c = c+1;
-    if c==4097
-        c = uint16(1);
-        tout = tout - 1;
-        if tout == 0
-            tout = uint8(4);
-        end
+    val = buf1(ndx+1);
+    buf1 (ndx+1) = 0.0;
+            
+    ndx = ndx + 1;
+    if ndx == 16384
+        ndx = 0;
     end
 end
 
