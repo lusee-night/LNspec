@@ -5,5 +5,5 @@ function data = read_samples(fname)
             data(i) = data(i) - 16384;
         end
     end
-    data = int32(data);
+    data = int16(data);
 end
