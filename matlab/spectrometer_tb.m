@@ -35,10 +35,15 @@ end
 
 disp(t)
 freq = (1:settings_Nchan)*50/2048;
-pk1 = (pk(1,:) + pk(2,:) + 2 * pk(3,:))/4.0;
-pk2 = (pk(1,:) + pk(2,:) - 2 * pk(3,:))/4.0;
-pkXR = pk(4,:)/2;
-pkXI = (pk(1,:)-pk(2,:))/4.0;
+%pk1 = (pk(1,:) + pk(2,:) + 2 * pk(3,:))/4.0;
+%pk2 = (pk(1,:) + pk(2,:) - 2 * pk(3,:))/4.0;
+%pkXR = pk(4,:)/2;
+%pkXI = (pk(1,:)-pk(2,:))/4.0;
+pk1 = pk(1,:);
+pk2 = pk(2,:);
+pkXR = pk(3,:);
+pkXI = pk(4,:);
+
 clf;
 
 semilogy(freq,pk1,'bo-');

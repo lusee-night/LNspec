@@ -1,17 +1,18 @@
 function [outpk,ready_out] = average23(P1, count, ready_in)
-    persistent  Nac P1A P1S stream;
+    persistent  Nac P1A P1S stream overN;
 
     if isempty(Nac)
         Nac = 0;
         P1A = zeros(1,2048);
         stream = 0;
+        overN = 0.25
     end
     ready_out = false;
     outpk = 0;
     
     
     if (ready_in)
-        P1A (count) = P1A(count) + P1;
+        P1A (count) = P1A(count) + P1*overN;
     
         if (count == 1)
             Nac = Nac + 1;
