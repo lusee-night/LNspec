@@ -49,6 +49,10 @@ clf;
 semilogy(freq,pk1,'bo-');
 hold on
 semilogy(freq,pk2,'ro-');
+%plot(freq,pk1,'bo-');
+%hold on
+%plot(freq,pk2,'ro-');
+
 xlim([0 10]);
 xlabel('freq [MHz]')
 ylabel('power')

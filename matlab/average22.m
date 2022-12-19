@@ -5,7 +5,7 @@ function [outpk,ready_out] = average22(P1, count, ready_in)
         Nac = 0;
         P1A = zeros(1,2048);
         stream = 0;
-        overN = 0.25
+        overN = 0.25;
     end
     ready_out = false;
     outpk = 0;
