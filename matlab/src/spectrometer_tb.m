@@ -5,7 +5,6 @@ dt = 1;
 omega1 = 20;
 omega2 = 40;
 omegax = 50;
-count = 1;
 Npk = 0;
 clf;
 
@@ -19,13 +18,11 @@ while Npk<2;
     sample1 = samples1(mod(t,N1)+1);
     sample2 = samples2(mod(t,N2)+1);
 
-    [pks, ready] = spectrometer(sample1,sample2);
+    [pks, outbin, ready] = spectrometer(sample1,sample2);
 
     if ready
-        pk(:,count) = pks;
-        count = count + 1;
-        if (count>{Nchan})
-            count = 1;
+        pk(:,outbin+1) = pks;
+        if (outbin+1)=={Nchan}
             Npk = Npk + 1;
             disp(Npk);
         end

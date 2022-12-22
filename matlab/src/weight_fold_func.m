@@ -5,10 +5,10 @@ function val = weight_fold_func (sample, w1,w2,w3,w4 )
         ndx  = 0;
     end
 
-    c = mod(ndx,{Nfft})+1;
+    c = mod(ndx,{Nfft});
     w = [w4 w3 w2 w1];
     for i=1:4
-        buf1(c+{Nfft}*(i-1)) = buf1(c+{Nfft}*(i-1)) + sample*w(i);
+        buf1(c+{Nfft}*(i-1)+1) = buf1(c+{Nfft}*(i-1)+1) + sample*w(i);
     end
 
     val = buf1(ndx+1);
