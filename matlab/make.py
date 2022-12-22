@@ -8,7 +8,7 @@ Nblock = Ntaps*Nfft
 Navg   = 4
 overNavg = 1/Navg
 
-base_funcs = "spectrometer weight_streamer sfft deinterlace correlate_2ch ".split()
+base_funcs = "spectrometer weight_streamer sfft deinterlace ".split()
 base_funcs += "spectrometer_tb read_samples".split()
 
 

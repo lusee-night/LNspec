@@ -7,7 +7,7 @@ setenv('GCC', "gcc-10")
 % Create a 'fixpt' config with default settings
 fixptcfg = coder.config('fixpt');
 fixptcfg.TestBenchName = 'spectrometer_tb';
-fixptcfg.DefaultWordLength=18;
+fixptcfg.DefaultWordLength=32;
 % change settings
 fixptcfg.LaunchNumericTypesReport = true;
 
