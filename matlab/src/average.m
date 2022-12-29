@@ -13,7 +13,7 @@ function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
     
     if (ready_in)
         P1 = {part}(ch1_val*conj(ch2_val)); % part will be replaced by preprocessor
-        P1A (count) = P1A(count) + P1*{overNavg};
+        P1A (count+1) = P1A(count+1) + P1*{overNavg};
     
         if (count == 1)
             Nac = Nac + 1;

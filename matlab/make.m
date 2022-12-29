@@ -1,6 +1,10 @@
 clear all
 
-system("python make.py");
+resp = system("python make.py");
+if (resp == 1)
+    system("python3.10 make.py");
+end
+
 setenv('TMPDIR', getenv('PWD')+"/tmp")
 setenv('GCC', "gcc-10")
 
@@ -23,17 +27,13 @@ hdlcfg.TestBenchName = 'spectrometer_tb';
 hdlcfg.GenerateHDLTestBench = true;
 hdlcfg.EnableRate = "InputDataRate"; %"DUTBaseRate";
 hdlCfg.MinimizeClockEnables = true;
+hdlcfg.SimIndexCheck = true;
 
-%codegen -float2fixed fixptcfg -config hdlcfg -args {0,0,int16(1)} add_prod
-%codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),0,0,0,0} weight_fold_func1
-%codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer
-%codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft 
-%codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),true} correlate
-%codegen -float2fixed fixptcfg -config hdlcfg -args {0.1, 0.1, 0.1, 0.1, int16(1), true} average2
-%codegen -float2fixed fixptcfg -config hdlcfg -args {0.1,  int16(1), true} average21
+codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),double(0),double(0),double(0),double(0)} weight_fold_func__instance_1_
+codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft 
+codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),true} deinterlace__instance_12_
+codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average__instance_P1_
 codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
+codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer
 
-
-
-
-
+disp("Finished!")
