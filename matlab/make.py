@@ -5,10 +5,11 @@ Nfft   = 4096
 Nchan  = Nfft // 2
 Ntaps  = 4
 Nblock = Ntaps*Nfft
+Nfold  = (Ntaps-1)*Nfft
 Navg   = 4
 overNavg = 1/Navg
 
-base_funcs = "spectrometer weight_streamer sfft ".split()
+base_funcs = "spectrometer weight_streamer sfft deinterlace ".split()
 base_funcs += "spectrometer_tb read_samples".split()
 
 
@@ -32,7 +33,8 @@ def make_get_pfb_weights():
 def process_file(fromf, tof, addrepl = None):
     fromfn = f"src/{fromf}.m"
     tofn = f"{tof}.m"
-    kdic={"Nfft": Nfft, "Nchan": Nchan, "Ntaps": Ntaps, "Navg": Navg,"overNavg":overNavg, "Nblock": Nblock}
+    kdic={"Nfft": Nfft, "Nchan": Nchan, "Ntaps": Ntaps, "Navg": Navg,
+          "overNavg":overNavg, "Nblock": Nblock, "Nfold": Nfold}
     if addrepl is not None:
         for ent in addrepl.split(","):
             key,value = ent.split('=')

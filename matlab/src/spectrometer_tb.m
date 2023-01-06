@@ -31,7 +31,7 @@ while Npk<2;
 end
 
 disp(t)
-freq = (1:{Nchan})*50/{Nchan};
+freq = (0:{Nchan}-1)*50/{Nchan};
 %pk1 = (pk(1,:) + pk(2,:) + 2 * pk(3,:))/4.0;
 %pk2 = (pk(1,:) + pk(2,:) - 2 * pk(3,:))/4.0;
 %pkXR = pk(4,:)/2;
@@ -40,6 +40,13 @@ pk1 = pk(1,:);
 pk2 = pk(2,:);
 pkXR = pk(3,:);
 pkXI = pk(4,:);
+
+[fid,msg] = fopen('spectrometer_output.txt','wt');
+assert(fid>=3,msg);
+for i=1:{Nchan}
+    fprintf(fid,'%d %d %d %d %d\n',freq(i), pk1(i),pk2(i),pkXR(i), pkXI(i));
+end
+fclose(fid);
 
 clf;
 
