@@ -6,8 +6,8 @@ function [pks, outbin, ready] = spectrometer (sample1, sample2)
     end
     
     [w1,w2,w3,w4] = weight_streamer();
-    acc1 = weight_fold_func__instance:1__(sample1, w1, w2, w3, w4);
-    acc2 = weight_fold_func__instance:2__(sample2, w1, w2, w3, w4);
+    acc1 = weight_fold__instance:1__(sample1, w1, w2, w3, w4);
+    acc2 = weight_fold__instance:2__(sample2, w1, w2, w3, w4);
     
     val = complex(acc1,acc2);
     [fft_val, fft_valid] = sfft(val');
