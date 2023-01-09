@@ -10,7 +10,7 @@ function [w1,w2,w3,w4] = weight_streamer()
     w3 = pfb_weights(mod(l+{Nfft}*2,{Nblock})+1);
     w4 = pfb_weights(mod(l+{Nfft}*3,{Nblock})+1);
     l = l+1;
-    if (l == {Nfft})
+    if (l == {Nblock})
         l = 0;
     end
 end
