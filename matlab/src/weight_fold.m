@@ -1,5 +1,7 @@
 function val = weight_fold (sample, w1,w2,w3,w4 )
     persistent buf1 buf2 buf3 buf4 ndx bndx
+
+    sample = double(sample);
     
     if isempty(buf1)
         buf1 = zeros(1, {Nfft});
@@ -14,15 +16,17 @@ function val = weight_fold (sample, w1,w2,w3,w4 )
 
     if (bndx==0)
         buf1(ndx+1) = sample;
+        val = sample*w1+buf2(ndx+1)*w2+buf3(ndx+1)*w3+buf4(ndx+1)*w4;
     elseif (bndx==1)
         buf2(ndx+1) = sample;
+        val = buf1(ndx+1)*w1+sample*w2+buf3(ndx+1)*w3+buf4(ndx+1)*w4;
     elseif (bndx==2)
         buf3(ndx+1) = sample;
+        val = buf1(ndx+1)*w1+buf2(ndx+1)*w2+sample*w3+buf4(ndx+1)*w4;
     else
         buf4(ndx+1) = sample;
+        val = buf1(ndx+1)*w1+buf2(ndx+1)*w2+buf3(ndx+1)*w3+sample*w4;
     end
-
-    val = buf1(ndx+1)*w1+buf2(ndx+1)*w2+buf3(ndx+1)*w3+buf4(ndx+1)*w4;
     
     ndx = ndx + 1;
     if (ndx=={Nfft})
