@@ -53,7 +53,8 @@ def process_file(fromf, tof, addrepl = None):
             k = max(s[:i].rfind(" "), s[:i].rfind("="))
             tomake = s[k+1:i]+"__instance_"+insta+"_"
             frommake = s[k+1:i]
-            addrepl = splt[2] if len(splt)>2 else None
+            addrepl = f"parent={insta}"
+            addrepl += ","+splt[2] if len(splt)>2 else ""
             ders.append((frommake,tomake,addrepl))
         return s
                     
@@ -68,11 +69,13 @@ if __name__=="__main__":
     derived_files=[]
     print ("Base files:")
     for func in base_funcs:
-        new_der = process_file(func,func)
-        derived_files+=new_der
+        derived_files+=process_file(func,func)
     print ("Derived files:")
-    for fromf,tof,addrepl in derived_files:
-        process_file (fromf,tof,addrepl)
+    while len(derived_files)>0:
+        new_derived_files = []
+        for fromf,tof,addrepl in derived_files:
+            new_derived_files += process_file (fromf,tof,addrepl)
+        derived_files = new_derived_files
     print ("PFB weights:")
     make_get_pfb_weights()
         

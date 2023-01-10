@@ -1,6 +1,7 @@
 function val = weight_fold (sample, w1,w2,w3,w4 )
     persistent buf1 buf2 buf3 buf4 ndx bndx
-    
+
+    sample = double(sample);
     if isempty(buf1)
         buf1 = zeros(1, {Nfft});
         buf2 = zeros(1, {Nfft});
@@ -12,18 +13,13 @@ function val = weight_fold (sample, w1,w2,w3,w4 )
     
     assert({Ntaps}==4);
 
-    if (bndx==0)
-        buf1(ndx+1) = sample;
-    elseif (bndx==1)
-        buf2(ndx+1) = sample;
-    elseif (bndx==2)
-        buf3(ndx+1) = sample;
-    else
-        buf4(ndx+1) = sample;
-    end
+    v1 = ramwrap__instance:{parent}_1__ (ndx, sample, bndx==0);
+    v2 = ramwrap__instance:{parent}_2__ (ndx, sample, bndx==1);
+    v3 = ramwrap__instance:{parent}_3__ (ndx, sample, bndx==2);
+    v4 = ramwrap__instance:{parent}_4__ (ndx, sample, bndx==3);
 
-    val = buf1(ndx+1)*w1+buf2(ndx+1)*w2+buf3(ndx+1)*w3+buf4(ndx+1)*w4;
-    
+    val = v1*w1+v2*w2+v3*w3+v4*w4;
+
     ndx = ndx + 1;
     if (ndx=={Nfft})
         ndx = 0; 
