@@ -31,7 +31,7 @@ while Npk<2;
 end
 
 disp(t)
-freq = (0:{Nchan}-1)*50/{Nchan};
+freq = (0:{Nchan})*50/{Nchan};
 %pk1 = (pk(1,:) + pk(2,:) + 2 * pk(3,:))/4.0;
 %pk2 = (pk(1,:) + pk(2,:) - 2 * pk(3,:))/4.0;
 %pkXR = pk(4,:)/2;

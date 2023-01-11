@@ -9,7 +9,7 @@ Nfold  = (Ntaps-1)*Nfft
 Navg   = 4
 overNavg = 1/Navg
 
-base_funcs = "spectrometer weight_streamer sfft deinterlace ".split()
+base_funcs = "spectrometer weight_streamer ".split()
 base_funcs += "spectrometer_tb read_samples".split()
 
 
