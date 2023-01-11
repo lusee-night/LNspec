@@ -14,8 +14,12 @@ function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
     P1 = {part}(ch1_val*conj(ch2_val)); % part will be replaced by preprocessor
     zero_acc = (Nac==0); % on the first go, we don't add.
     count = count*int16(ready_in);
-    P1A (count+1) = P1A(count+1)*zero_acc + P1*{overNavg}*(ready_in);
-    outpk = P1A(stream+1);
+    outpk = 0;
+    if ready_in
+        P1A (count+1) =  P1A(count+1)*zero_acc + P1*{overNavg}*(ready_in);
+    else
+        outpk = P1A(stream+1);
+    end
     outbin = stream;
 
     %Nac = Nac+(ready_in)*(count==1);
