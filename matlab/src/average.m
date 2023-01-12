@@ -1,42 +1,59 @@
 function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
-    persistent  Nac P1A stream streaming overN;
+    persistent  Nac buf1 buf2 to1adr to2adr to1val to2val overN;
 
-    if isempty(Nac)
+        if isempty(Nac)
         Nac = 0;
-        P1A = zeros(1,{Nchan}+1);
-        stream = 1;
-        streaming = false;
+        buf1 = zeros(1,{Nchan}/2+1);
+        buf2 = zeros(2,{Nchan}/2+1);
         overN = {overNavg};
+        to1adr = int16({Nchan}/2+1);
+        to2adr = int16({Nchan}/2+1);
+        to1val = 0;
+        to2val = 0;
     end
 
     
     ready_out = false;
-    P1 = {part}(ch1_val*conj(ch2_val)); % part will be replaced by preprocessor
-    zero_acc = (Nac==0); % on the first go, we don't add.
-    count = count*int16(ready_in);
+    outbin = int16(0);
     outpk = 0;
-    if ready_in
-        P1A (count+1) =  P1A(count+1)*zero_acc + P1*{overNavg}*(ready_in);
-    else
-        outpk = P1A(stream+1);
-    end
-    outbin = stream;
-
-    %Nac = Nac+(ready_in)*(count==1);
-    %streaming = (Nac == {Navg})*(count==1);
-    %Nac = Nac * ((Nac== {Navg}) & streaming);
+    P = {part}(ch1_val*conj(ch2_val))*(ready_in); % part will be replaced by preprocessor
+    ticktock = mod(count,2);
     
+    if ticktock
+        if (ready_in)
+            to1adr = count/2+0.5;
+        else
+            to1adr = int16({Nchan}/2+1);
+        end
+        to1val = buf1(to1adr)+P;
+        if (Nac == {Navg}-1) & (ready_in)
+            outpk = to1val;
+            outbin = count;
+            to1val = 0;
+            ready_out=true;
+        end
+        buf2(to2adr) = to2val;
+    else
+        if (ready_in)
+            to2adr = count/2+1;
+        else
+            to2adr = int16({Nchan}/2+1);
+        end
+        to2val = buf2(to2adr)+P;
+        value = to2val;
+        if (Nac == {Navg}-1) & (ready_in)
+            outpk = to2val;
+            outbin = count;
+            to2val = 0;
+            ready_out=true;
+        end
+        buf1(to1adr) = to1val;
+    end
+
     Nac = Nac + ((ready_in) & (count == 1));
     if (Nac == {Navg});
-        streaming=true;
         Nac = 0;
     end
-    
-    ready_out = streaming;
-    stream = stream + 1*streaming;
-    if stream>{Nchan}
-        stream  = 1;
-        streaming = false;
-    end
+
 end
 

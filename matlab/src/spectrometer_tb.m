@@ -22,7 +22,7 @@ while Npk<2;
 
     if ready
         pk(:,outbin+1) = pks;
-        if (outbin+1)=={Nchan}
+        if outbin==1
             Npk = Npk + 1;
             disp(Npk);
         end
@@ -31,7 +31,7 @@ while Npk<2;
 end
 
 disp(t)
-freq = (0:{Nchan})*50/{Nchan};
+freq = (1:{Nchan})*50/{Nchan};
 %pk1 = (pk(1,:) + pk(2,:) + 2 * pk(3,:))/4.0;
 %pk2 = (pk(1,:) + pk(2,:) - 2 * pk(3,:))/4.0;
 %pkXR = pk(4,:)/2;
