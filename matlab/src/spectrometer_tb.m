@@ -1,6 +1,6 @@
 clear all;
 
-t = 1;
+t = 0;
 dt = 1;
 omega1 = 20;
 omega2 = 40;
@@ -13,22 +13,39 @@ samples2 = read_samples('samples/Raw_data_ADC_B_1MHz');
 N1 = length(samples1);
 N2 = length(samples2);
 pk=zeros(4,{Nchan});
-
+Navg={Navg};
 while Npk<2;
+    if (mod(t,5000)==0)
+        fprintf ("t = %i\n",t);
+    end
+
     sample1 = samples1(mod(t,N1)+1);
     sample2 = samples2(mod(t,N2)+1);
 
-    [pks, outbin, ready] = spectrometer(sample1,sample2);
+    [pks, outbin, ready] = spectrometer(sample1,sample2, Navg);
 
     if ready
         pk(:,outbin+1) = pks;
         if outbin==1
             Npk = Npk + 1;
-            disp(Npk);
+            fprintf ('%i in the bag.\n',Npk);
         end
     end
     t = t + dt;
+    if (t>30000)
+        % Now can set Navg to something large so that we can teach it about the range
+        % It won't matter, since it resets on the next counter reset;
+        Navg=512;
+    end
+    if (t>50000)
+        fprintf ("We should really have finished by now!");
+        assert(false);
+    end
 end
+
+% Let's call again with a larger Navg to get demonstrate the range.
+
+
 
 disp(t)
 freq = (1:{Nchan})*50/{Nchan};

@@ -32,8 +32,8 @@ hdlcfg.SimIndexCheck = true;
 %codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),double(0),double(0),double(0),double(0)} weight_fold__instance_1_
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft 
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),true} deinterlace__instance_12_
-%codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average__instance_P1_
-codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
+%codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true,4} average__instance_P1_
+codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0),4} spectrometer
 %codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer
 
 disp("Finished!")
