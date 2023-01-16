@@ -24,10 +24,17 @@ fixptcfg.LaunchNumericTypesReport = true;
 hdlcfg = coder.config('hdl');
 hdlcfg.TestBenchName = 'spectrometer_tb';
 
+hdlcfg.MATLABSourceComments = true;
+
 hdlcfg.GenerateHDLTestBench = true;
 hdlcfg.EnableRate = "InputDataRate"; %"DUTBaseRate";
 hdlCfg.MinimizeClockEnables = true;
 hdlcfg.SimIndexCheck = true;
+%hdlcfg.AdaptivePipelining = true;
+%hdlcfg.DistributedPipelining = true;
+%hdlcfg.InputPipeline = 1;
+%hdlcfg.OutputPipeline = 1;
+
 
 %codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),double(0),double(0),double(0),double(0)} weight_fold__instance_1_
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft 
