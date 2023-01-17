@@ -28,10 +28,13 @@ hdlcfg.MATLABSourceComments = true;
 
 hdlcfg.GenerateHDLTestBench = true;
 hdlcfg.EnableRate = "InputDataRate"; %"DUTBaseRate";
-hdlCfg.MinimizeClockEnables = true;
+%hdlcfg.MinimizeClockEnables = true;
+
 hdlcfg.SimIndexCheck = true;
-%hdlcfg.AdaptivePipelining = true;
-%hdlcfg.DistributedPipelining = true;
+hdlcfg.SynthesisToolChipFamily = "polarfire";
+%hdlcfg.SynthesisToolSpeedValue = -1;
+hdlcfg.AdaptivePipelining = true;
+hdlcfg.DistributedPipelining = true;
 %hdlcfg.InputPipeline = 1;
 %hdlcfg.OutputPipeline = 1;
 
