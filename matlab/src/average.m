@@ -1,8 +1,8 @@
-function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in, Navg)
+function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
     persistent  Nac buf1 buf2 to1adr to2adr to1val to2val overN Nac_t ticktock;
 
     if isempty(Nac)
-        Nac = Navg; 
+        Nac = {Navg}; 
         buf1 = zeros(1,{Nchan}/2+1);
         buf2 = zeros(2,{Nchan}/2+1);
         to1adr = int16({Nchan}/2+1);
@@ -15,7 +15,7 @@ function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in,
     ready_out = false;
     outbin = int16(0);
     outpk = 0;
-    P = {part}(ch1_val*conj(ch2_val))*(1/Navg); % part will be replaced by preprocessor
+    P = {part}(ch1_val*conj(ch2_val))*(1/{Navg}); % part will be replaced by preprocessor
     if (ready_in)
         ticktock = ~ticktock;
     end
@@ -53,7 +53,7 @@ function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in,
 
     Nac = Nac - ((ready_in) & (count == 1));
     if (Nac == 0);
-        Nac = Navg;
+        Nac = {Navg};
     end
 
 end

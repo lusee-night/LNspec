@@ -1,4 +1,4 @@
-function [pks, outbin, ready] = spectrometer (sample1, sample2, Navg)
+function [pks, outbin, ready] = spectrometer (sample1, sample2)
 
     persistent c
     if isempty(c)
@@ -14,10 +14,10 @@ function [pks, outbin, ready] = spectrometer (sample1, sample2, Navg)
     
     [ch1_val, ch2_val, bin, cready ] = deinterlace__instance:12__(fft_val, fft_valid);
 
-    [pk1, outbin, ready] = average__instance:P1:part=real__(ch1_val, ch1_val, bin, cready, Navg);
-    [pk2, outbin, ready] = average__instance:P2:part=real__(ch2_val, ch2_val, bin, cready, Navg);
-    [pkr, outbin, ready] = average__instance:P3:part=real__(ch1_val, ch2_val, bin, cready, Navg);
-    [pki, outbin, ready] = average__instance:P4:part=imag__(ch1_val, ch2_val, bin, cready, Navg);
+    [pk1, outbin, ready] = average__instance:P1:part=real__(ch1_val, ch1_val, bin, cready);
+    [pk2, outbin, ready] = average__instance:P2:part=real__(ch2_val, ch2_val, bin, cready);
+    [pkr, outbin, ready] = average__instance:P3:part=real__(ch1_val, ch2_val, bin, cready);
+    [pki, outbin, ready] = average__instance:P4:part=imag__(ch1_val, ch2_val, bin, cready);
     pks = [pk1,pk2,pkr,pki];
     c=c+1;
 end

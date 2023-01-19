@@ -13,7 +13,6 @@ samples2 = read_samples('samples/Raw_data_ADC_B_1MHz');
 N1 = length(samples1);
 N2 = length(samples2);
 pk=zeros(4,{Nchan});
-Navg={Navg};
 while Npk<2;
     if (mod(t,5000)==0)
         fprintf ("t = %i\n",t);
@@ -22,7 +21,7 @@ while Npk<2;
     sample1 = samples1(mod(t,N1)+1);
     sample2 = samples2(mod(t,N2)+1);
 
-    [pks, outbin, ready] = spectrometer(sample1,sample2, Navg);
+    [pks, outbin, ready] = spectrometer(sample1,sample2);
 
     if ready
         pk(:,outbin+1) = pks;
