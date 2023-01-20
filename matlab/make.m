@@ -45,7 +45,9 @@ hdlcfg.SynthesisToolChipFamily = "polarfire";
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),true} deinterlace__instance_12_
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average__instance_P1_
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average__instance_P2_
-codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
-%codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer
+%codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
+codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer
+%codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer_alt1
+%codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer_alt2
 
 disp("Finished!")

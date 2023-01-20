@@ -9,7 +9,7 @@ Nfold  = (Ntaps-1)*Nfft
 Navg   = 4
 overNavg = 1/Navg
 
-base_funcs = "spectrometer weight_streamer sfft".split()
+base_funcs = "spectrometer weight_streamer weight_streamer_alt1 weight_streamer_alt2 sfft".split()
 base_funcs += "spectrometer_tb read_samples".split()
 
 
@@ -30,6 +30,29 @@ def make_get_pfb_weights():
     f.write('end\n')
     f.close()
 
+def make_get_pfb_weights_separate():
+    f=[]
+    Ntot = Nfft*Ntaps;
+    xp = [(-Ntot/2+0.5+x)/Nfft*m.pi for x in range(Ntot)]
+    for i in range(Ntaps):
+        fname = f"get_pfb_weights_separate_{i+1}_{Nfft}_{Ntaps}.m"
+        print (f"*** Generating {fname}.")
+        f = open(fname,'w')
+        f.write(f"function out = get_pfb_weights_separate_{i+1}_{Nfft}_{Ntaps}(Nfft,Ntaps)\n")
+        f.write(f"   assert(Nfft=={Nfft})\n")
+        f.write(f"   assert(Ntaps=={Ntaps})\n")
+        f.write(f"   out = zeros(1,{Nfft});\n")
+
+        for c, x in enumerate(xp):
+            v = m.sin(x)/x if x!=0 else 1.0
+            j = c//Nfft;
+            k = c%Nfft;
+            if j==i:
+                f.write(f"   out({k+1}) = {v:10.8};\n")
+        f.write('end\n')
+        f.close()
+
+    
 def process_file(fromf, tof, addrepl = None):
     fromfn = f"src/{fromf}.m"
     tofn = f"{tof}.m"
@@ -78,6 +101,7 @@ if __name__=="__main__":
         derived_files = new_derived_files
     print ("PFB weights:")
     make_get_pfb_weights()
+    make_get_pfb_weights_separate()
         
         
 
