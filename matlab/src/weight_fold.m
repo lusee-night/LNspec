@@ -1,4 +1,4 @@
-function val = weight_fold (sample, w1,w2,w3,w4 )
+function val_out = weight_fold (sample, w1,w2,w3,w4 )
     persistent buf1 buf2 buf3 buf4 ndx bndx
 
     sample = double(sample);
@@ -18,7 +18,7 @@ function val = weight_fold (sample, w1,w2,w3,w4 )
     v3 = ramwrap_instance:{parent}_3_(ndx, sample, bndx==2);
     v4 = ramwrap_instance:{parent}_4_(ndx, sample, bndx==3);
 
-    val = v1*w1+v2*w2+v3*w3+v4*w4;
+    val_out = v1*w1+v2*w2+v3*w3+v4*w4;
 
     ndx = ndx + 1;
     if (ndx=={Nfft})

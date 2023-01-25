@@ -8,6 +8,7 @@ end
 setenv('TMPDIR', getenv('PWD')+"/tmp")
 setenv('GCC', "gcc-10")
 
+
 [fixptcfg,hdlcfg] = makecfg ();
 codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer
 
