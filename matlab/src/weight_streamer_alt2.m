@@ -26,8 +26,8 @@ function [w1,w2,w3,w4] = weight_streamer_alt2()
     w3 = b3*l1+b4*l2+b1*l3+b2*l4;
     w4 = b4*l1+b1*l2+b2*l3+b3*l4;
     
-    l = count_up__instance:wsl:over={Nfft}__(l);
+    l = count_up_instance:wsl:over={Nfft}_(l);
     if l==0
-        ndx = count_up__instance:wsndx:over={Ntaps}__(ndx);
+        ndx = count_up_instance:wsndx:over={Ntaps}_(ndx);
     end
 end

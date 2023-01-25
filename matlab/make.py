@@ -67,17 +67,21 @@ def process_file(fromf, tof, addrepl = None):
     ders = []
     def fix_vars(s):
         s = s.format(**kdic)
-        i = s.find("__instance:")
+        i = s.find("_instance:")
         if (i>0):
-            j=s.rfind("__")
+            so = s[i:]
+            so = so[:so.find("(")] # opening bracket for function call
+            j = i+so.rfind("_")
+            assert(j>i)
             splt = s[i:j].split(':')
             insta = splt[1]
-            s = s[:i]+"__instance_"+insta+"_"+s[j+2:]
+            s = s[:i]+"_instance_"+insta+s[j+1:]
             k = max(s[:i].rfind(" "), s[:i].rfind("="))
-            tomake = s[k+1:i]+"__instance_"+insta+"_"
+            tomake = s[k+1:i]+"_instance_"+insta
             frommake = s[k+1:i]
             addrepl = f"parent={insta}"
             addrepl += ","+splt[2] if len(splt)>2 else ""
+            print (frommake,tomake,addrepl)
             ders.append((frommake,tomake,addrepl))
         return s
                     

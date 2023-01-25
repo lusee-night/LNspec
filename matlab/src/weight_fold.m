@@ -13,10 +13,10 @@ function val = weight_fold (sample, w1,w2,w3,w4 )
     
     assert({Ntaps}==4);
 
-    v1 = ramwrap__instance:{parent}_1__ (ndx, sample, bndx==0);
-    v2 = ramwrap__instance:{parent}_2__ (ndx, sample, bndx==1);
-    v3 = ramwrap__instance:{parent}_3__ (ndx, sample, bndx==2);
-    v4 = ramwrap__instance:{parent}_4__ (ndx, sample, bndx==3);
+    v1 = ramwrap_instance:{parent}_1_(ndx, sample, bndx==0);
+    v2 = ramwrap_instance:{parent}_2_(ndx, sample, bndx==1);
+    v3 = ramwrap_instance:{parent}_3_(ndx, sample, bndx==2);
+    v4 = ramwrap_instance:{parent}_4_(ndx, sample, bndx==3);
 
     val = v1*w1+v2*w2+v3*w3+v4*w4;
 

@@ -12,8 +12,8 @@ function [w1,w2,w3,w4] = weight_streamer()
     w2 = pfb_weights(l2+1);
     w3 = pfb_weights(l3+1);
     w4 = pfb_weights(l4+1);
-    l1 = count_up__instance:l1:over={Nblock}__(l1);
-    l2 = count_up__instance:l2:over={Nblock}__(l2);
-    l3 = count_up__instance:l3:over={Nblock}__(l3);
-    l4 = count_up__instance:l4:over={Nblock}__(l4);
+    l1 = count_up_instance:l1:over={Nblock}_(l1);
+    l2 = count_up_instance:l2:over={Nblock}_(l2);
+    l3 = count_up_instance:l3:over={Nblock}_(l3);
+    l4 = count_up_instance:l4:over={Nblock}_(l4);
 end
