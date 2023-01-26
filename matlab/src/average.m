@@ -15,14 +15,14 @@ function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
     ready_out = false;
     outbin = int16(0);
     outpk = 0;
-    P = {part}(ch1_val*conj(ch2_val))*(1/{Navg}); % part will be replaced by preprocessor
+    P = {part}(coder.hdl.pipeline(ch1_val*coder.hdl.pipeline(conj(ch2_val))));
     if (ready_in)
         ticktock = ~ticktock;
     end
     
     if ticktock
         if (ready_in)
-            to1adr = count/2+0.5;
+            to1adr = int16((count+1)/2);
         else
             to1adr = int16({Nchan}/2+1);
         end
@@ -36,7 +36,7 @@ function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
         buf2(to2adr) = to2val;
     else
         if (ready_in)
-            to2adr = count/2+1;
+            to2adr = int16(count/2+1);
         else
             to2adr = int16({Nchan}/2+1);
         end
@@ -51,7 +51,7 @@ function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
         buf1(to1adr) = to1val;
     end
 
-    Nac = Nac - ((ready_in) & (count == 1));
+    Nac = Nac - coder.hdl.pipeline(((ready_in) & (count == 1)));
     if (Nac == 0);
         Nac = {Navg};
     end

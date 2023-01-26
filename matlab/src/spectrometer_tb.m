@@ -13,7 +13,7 @@ samples2 = read_samples('samples/Raw_data_ADC_B_1MHz');
 N1 = length(samples1);
 N2 = length(samples2);
 pk=zeros(4,{Nchan});
-while Npk<6;
+while Npk<2;
     if (mod(t,5000)==0)
         fprintf ("t = %i\n",t);
     end

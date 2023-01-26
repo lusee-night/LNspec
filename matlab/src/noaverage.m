@@ -3,6 +3,6 @@ function [outpk, outbin, ready_out] = noaverage(ch1_val, ch2_val, count, ready_i
 
     ready_out = ready_in;
     outbin = count;
-    outpk = {part}(ch1_val*conj(ch2_val));
+    outpk = {part}(coder.hdl.pipeline(ch1_val*coder.hdl.pipeline(conj(ch2_val))));
 end
 

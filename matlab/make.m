@@ -9,20 +9,23 @@ setenv('TMPDIR', getenv('PWD')+"/tmp")
 setenv('GCC', "gcc-10")
 
 
-[fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer
+% [fixptcfg,hdlcfg] = makecfg ();
+% codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer
 
-[fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),double(0),double(0),double(0),double(0)} weight_fold_instance_1
+% [fixptcfg,hdlcfg] = makecfg ();
+% codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),double(0),double(0),double(0),double(0)} weight_fold_instance_1
 
-[fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft 
+% [fixptcfg,hdlcfg] = makecfg ();
+% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft 
 
-[fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),true} deinterlace_instance_12
+% [fixptcfg,hdlcfg] = makecfg ();
+% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),true} deinterlace_instance_12
 
-[fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} noaverage_instance_P1
+% [fixptcfg,hdlcfg] = makecfg ();
+% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} noaverage_instance_P1
+
+%[fixptcfg,hdlcfg] = makecfg ();
+%codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average_instance_P1
 
 [fixptcfg,hdlcfg] = makecfg ();
 codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
@@ -55,9 +58,9 @@ function [fixptcfg,hdlcfg] = makecfg ()
 
     hdlcfg.SimIndexCheck = true;
     hdlcfg.AdaptivePipelining = true;
-    hdlcfg.DistributedPipelining = true;
-    %hdlcfg.InputPipeline = 1;
-    %hdlcfg.OutputPipeline = 1;
+    hdlcfg.DistributedPipelining = false;
+    hdlcfg.InputPipeline = 0;
+    hdlcfg.OutputPipeline = 0;
 
     hdlcfg.SynthesisTool = 'MicroSemi Libero SoC';
     hdlcfg.SynthesisToolChipFamily = 'PolarFire';
