@@ -18,6 +18,9 @@ function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
     P = {part}(coder.hdl.pipeline(ch1_val*coder.hdl.pipeline(conj(ch2_val))));
     if (ready_in)
         ticktock = ~ticktock;
+        if (count == {Nchan}-1)
+            ticktock = true;
+        end
     end
     
     if ticktock
@@ -41,7 +44,6 @@ function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
             to2adr = int16({Nchan}/2+1);
         end
         to2val = buf2(to2adr)+P;
-        value = to2val;
         if (Nac == 1) & (ready_in)
             outpk = to2val;
             outbin = count;
