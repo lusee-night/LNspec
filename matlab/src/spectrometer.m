@@ -17,10 +17,14 @@ function [pks, outbin, ready] = spectrometer (sample1, sample2)
     
     [ch1_val, ch2_val, bin, cready ] = deinterlace_instance:12_(fft_val, fft_valid);
 
-    [pk1, outbin, ready] = average_instance:P1:part=real_(ch1_val, ch1_val, bin, cready);
-    [pk2, outbin, ready] = average_instance:P2:part=real_(ch2_val, ch2_val, bin, cready);
-    [pkr, outbin, ready] = average_instance:P3:part=real_(ch1_val, ch2_val, bin, cready);
-    [pki, outbin, ready] = average_instance:P4:part=imag_(ch1_val, ch2_val, bin, cready);
+    [ch1_val_notch, nready ] = notch_instance:1_(ch1_val, bin, cready);
+    %[ch2_val_notch, nready ] = notch_instance:2_(ch1_val, bin, cready);
+    ch2_val_notch = complex(0,0);
+    
+    [pk1, outbin, ready] = average_instance:P1:part=real_(ch1_val, ch1_val, bin, cready, ch1_val_notch, ch1_val_notch, nready);
+    [pk2, outbin, ready] = average_instance:P2:part=real_(ch2_val, ch2_val, bin, cready, ch2_val_notch, ch2_val_notch, nready);
+    [pkr, outbin, ready] = average_instance:P3:part=real_(ch1_val, ch2_val, bin, cready, ch1_val_notch, ch2_val_notch, nready);
+    [pki, outbin, ready] = average_instance:P4:part=imag_(ch1_val, ch2_val, bin, cready, ch1_val_notch, ch2_val_notch, nready);
     pks = [pk1,pk2,pkr,pki];
     c=c+1;
 end

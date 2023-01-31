@@ -6,7 +6,7 @@ Nchan  = Nfft // 2
 Ntaps  = 4
 Nblock = Ntaps*Nfft
 Nfold  = (Ntaps-1)*Nfft
-Navg   = 50
+Navg   = 5
 overNavg = 1/Navg
 
 base_funcs = "spectrometer weight_streamer sfft".split()
@@ -87,7 +87,7 @@ def process_file(fromf, tof, addrepl = None):
                     
     lines = [fix_vars(line) for line in lines]
     if (fromf!=tof):
-        lines[0] = lines[0].replace(fromf,tof)    
+        lines[0] = lines[0].replace(fromf+"(",tof+"(")    
     open(tofn,'w').writelines(lines)
     return ders
     

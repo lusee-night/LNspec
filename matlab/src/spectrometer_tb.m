@@ -6,8 +6,11 @@ dt = 1;
 Npk = 0;
 clf;
 
-samples1 = read_samples_bin('samples/sky_pf_100.dat');
-samples2 = read_samples_bin('samples/sky_100.dat');
+samples1 = read_samples_bin('samples/sky_pf_100.bin');
+samples2 = read_samples_bin('samples/sky_100.bin');
+%samples1 = read_samples('samples/Raw_data_ADC_A_6MHz');
+%samples2 = read_samples('samples/Raw_data_ADC_B_1MHz');
+
 N1 = length(samples1);
 N2 = length(samples2);
 pk=zeros(4,{Nchan});
@@ -16,9 +19,9 @@ while Npk<2;
         fprintf ("t = %i\n",t);
     end
     
-    sample1 = samples1(t+1);
-    sample2 = samples2(t+1);
-
+      sample1 = samples1(mod(t,N1)+1);
+      sample2 = sample1;%samples2(mod(t,N2)+1);
+      
     [pks, outbin, ready] = spectrometer(sample1,sample2);
 
     if ready
@@ -36,7 +39,7 @@ end
 
 
 disp(t)
-freq = (1:{Nchan})*50/{Nchan};
+freq = (1:{Nchan})*102.4/{Nfft};
 pk1 = pk(1,:);
 pk2 = pk(2,:);
 pkXR = pk(3,:);
@@ -55,7 +58,7 @@ semilogy(freq,pk1,'bo-');
 hold on
 semilogy(freq,pk2,'ro-');
 
-xlim([0 10]);
+xlim([0 1]);
 xlabel('freq [MHz]')
 ylabel('power')
 

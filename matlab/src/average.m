@@ -1,4 +1,4 @@
-function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
+function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in, ch1_val_notch, ch2_val_notch, nready)
     persistent  Nac buf1 buf2 to1adr to2adr to1val to2val overN Nac_t ticktock;
 
     if isempty(Nac)
@@ -18,6 +18,9 @@ function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
     P = {part}(coder.hdl.pipeline(ch1_val*coder.hdl.pipeline(conj(ch2_val))));
     if (ready_in)
         ticktock = ~ticktock;
+        if (count == {Nchan}-1)
+            ticktock = true;
+        end
     end
     
     if ticktock
@@ -41,9 +44,10 @@ function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
             to2adr = int16({Nchan}/2+1);
         end
         to2val = buf2(to2adr)+P;
-        value = to2val;
         if (Nac == 1) & (ready_in)
-            outpk = to2val;
+            assert(nready)
+            Pn = {part}(coder.hdl.pipeline(ch1_val_notch*coder.hdl.pipeline(conj(ch2_val_notch))));
+            outpk = to2val-Pn*({overNavg});
             outbin = count;
             to2val = 0;
             ready_out=true;
@@ -57,4 +61,6 @@ function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
     end
 
 end
+
+    
 
