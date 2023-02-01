@@ -31,7 +31,9 @@ function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in,
         end
         to1val = buf1(to1adr)+P;
         if (Nac == 1) & (ready_in)
-            outpk = to1val;
+            assert(nready)
+            Pn = {part}(coder.hdl.pipeline(ch1_val_notch*coder.hdl.pipeline(conj(ch2_val_notch))));
+            outpk = to1val-Pn*({overNavg});
             outbin = count;
             to1val = 0;
             ready_out=true;
