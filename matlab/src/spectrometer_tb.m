@@ -19,7 +19,7 @@ while Npk<2;
         fprintf ("t = %i\n",t);
     end
     
-      sample1 = samples1(mod(t,N1)+1);
+      sample1 = int16(samples1(mod(t,N1)+1));
       sample2 = sample1;%samples2(mod(t,N2)+1);
       
     [pks, outbin, ready] = spectrometer(sample1,sample2);

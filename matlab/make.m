@@ -11,8 +11,8 @@ setenv('TMPDIR', getenv('PWD')+"/tmp")
 setenv('GCC', "gcc-10")
 
 
-% [fixptcfg,hdlcfg] = makecfg ();
-% codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer
+%[fixptcfg,hdlcfg] = makecfg ();
+%codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer
 
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),double(0),double(0),double(0),double(0)} weight_fold_instance_1
@@ -33,7 +33,10 @@ codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft
 % codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),int16(0),true} notch_instance_1
 
 %[fixptcfg,hdlcfg] = makecfg ();
-%codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
+%codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),int16(0),true} notch_instance_1
+
+[fixptcfg,hdlcfg] = makecfg ();
+codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
 
 
 disp("Finished!")

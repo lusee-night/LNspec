@@ -6,13 +6,11 @@ Nchan  = Nfft // 2
 Ntaps  = 4
 Nblock = Ntaps*Nfft
 Nfold  = (Ntaps-1)*Nfft
-Navg   = 5
+Navg   = 32
 overNavg = 1/Navg
 
-base_funcs = "spectrometer weight_streamer sfft".split()
+base_funcs = "spectrometer weight_streamer ndx_bounce sfft".split()
 base_funcs += "spectrometer_tb read_samples read_samples_bin".split()
-
-
 
 def make_get_pfb_weights():
     fname = f"get_pfb_weights_{Nfft}_{Ntaps}.m"
@@ -87,7 +85,8 @@ def process_file(fromf, tof, addrepl = None):
                     
     lines = [fix_vars(line) for line in lines]
     if (fromf!=tof):
-        lines[0] = lines[0].replace(fromf+"(",tof+"(")    
+        lines[0] = lines[0].replace(fromf+"(",tof+"(")
+        lines[0] = lines[0].replace(fromf+" (",tof+" (")    
     open(tofn,'w').writelines(lines)
     return ders
     
