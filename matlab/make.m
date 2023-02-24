@@ -1,5 +1,7 @@
 clear all
 
+clean_dir();
+
 resp = system("python make.py");
 if (resp == 1)
     system("python3.10 make.py");
@@ -9,26 +11,38 @@ setenv('TMPDIR', getenv('PWD')+"/tmp")
 setenv('GCC', "gcc-10")
 
 
-%[fixptcfg,hdlcfg] = makecfg ();
-%codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer
-
+% [fixptcfg,hdlcfg] = makecfg ();
+% codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer
+% 
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),double(0),double(0),double(0),double(0)} weight_fold_instance_1
 
 % [fixptcfg,hdlcfg] = makecfg ();
-% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft 
+% codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),double(0),double(0),double(0),double(0)} weight_fold_instance_2
 
+% [fixptcfg,hdlcfg] = makecfg ();
+% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft 
+% 
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),true} deinterlace_instance_12
 
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} noaverage_instance_P1
 
-%[fixptcfg,hdlcfg] = makecfg ();
-%codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average_instance_P1
-
 [fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
+codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average_instance_P1
+
+% [fixptcfg,hdlcfg] = makecfg ();
+% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average_instance_P2
+
+% [fixptcfg,hdlcfg] = makecfg ();
+% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average_instance_P3
+
+% [fixptcfg,hdlcfg] = makecfg ();
+% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average_instance_P4
+
+% [fixptcfg,hdlcfg] = makecfg ();
+% codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
 
 
 disp("Finished!")
@@ -57,18 +71,36 @@ function [fixptcfg,hdlcfg] = makecfg ()
     %hdlcfg.MinimizeClockEnables = true;
 
     hdlcfg.SimIndexCheck = true;
-    hdlcfg.AdaptivePipelining = true;
+    hdlcfg.AdaptivePipelining = false;
     hdlcfg.DistributedPipelining = false;
+    hdlcfg.RegisterInputs = false;
+    hdlcfg.RegisterOutputs = false;
     hdlcfg.InputPipeline = 0;
     hdlcfg.OutputPipeline = 0;
+    %hdlcfg.ConstantMultiplierOptimization = 'CSD';
+    %hdlcfg.LoopOptimization = 'UnrollLoops';
 
     hdlcfg.SynthesisTool = 'MicroSemi Libero SoC';
     hdlcfg.SynthesisToolChipFamily = 'PolarFire';
     hdlcfg.SynthesisToolDeviceName = 'MPF500TS';
     hdlcfg.SynthesisToolPackageName = 'FCG1152';
     hdlcfg.SynthesisToolSpeedValue = '-1';
-    hdlcfg.TargetFrequency =  100;
-    hdlcfg.SynthesizeGeneratedCode = true;
-    hdlcfg.PlaceAndRoute = true;
+    hdlcfg.TargetFrequency =  150;
+    hdlcfg.SynthesizeGeneratedCode = false;
+    hdlcfg.PlaceAndRoute = false;
 end
 
+function clean_dir()
+    if isfolder('codegen')
+        rmdir 'codegen'  's';
+    end
+    
+    dir_list = dir('*.m');
+    for i = 1 : length(dir_list)
+        name = dir_list(i).name;
+        if matches(name,'make.m') == 0
+            delete(name);
+        end
+    end
+    disp("Directory cleaned")
+end
