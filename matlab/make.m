@@ -30,8 +30,10 @@ setenv('GCC', "gcc-10")
 %[fixptcfg,hdlcfg] = makecfg ();
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),int16(0),true} notch_instance_1
 
+
 [fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
+addpath('./codegen/spectrometer/fixpt')
+codegen -config hdlcfg -args {int16(0),int16(0)} spectrometer_fixpt
 
 
 disp("Finished!")
@@ -39,7 +41,7 @@ disp("Finished!")
 function [fixptcfg,hdlcfg] = makecfg ()
     % Create a 'fixpt' config with default settings
     fixptcfg = coder.config('fixpt');
-    fixptcfg.TestBenchName = 'spectrometer_tb';
+    fixptcfg.TestBenchName = 'spectrometer_tb_fixpt';
 
     fixptcfg.ProposeFractionLengthsForDefaultWordLength=true;
     fixptcfg.DefaultWordLength=32;
@@ -71,7 +73,7 @@ function [fixptcfg,hdlcfg] = makecfg ()
     hdlcfg.SynthesisToolPackageName = 'FCG1152';
     hdlcfg.SynthesisToolSpeedValue = '-1';
     hdlcfg.TargetFrequency =  100;
-    hdlcfg.SynthesizeGeneratedCode = true;
-    hdlcfg.PlaceAndRoute = true;
+    hdlcfg.SynthesizeGeneratedCode = false;
+    hdlcfg.PlaceAndRoute = false;
 end
 
