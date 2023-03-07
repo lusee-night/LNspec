@@ -29,8 +29,8 @@ setenv('GCC', "gcc-10")
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} noaverage_instance_P1
 
-[fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average_instance_P1
+%[fixptcfg,hdlcfg] = makecfg ();
+%codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average_instance_P1
 
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average_instance_P2
@@ -43,6 +43,8 @@ codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),in
 
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
+[fixptcfg,hdlcfg] = makecfg ();
+codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),complex(0,0),complex(0,0)} correlate
 
 
 disp("Finished!")

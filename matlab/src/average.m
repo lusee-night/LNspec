@@ -1,4 +1,4 @@
-function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
+function [outpk, outbin, ready_out] = average(P, count, ready_in)
     persistent  Nac buf1 buf2 to1adr to2adr to1val to2val overN Nac_t ticktock;
 
     if isempty(Nac)
@@ -15,7 +15,6 @@ function [outpk, outbin, ready_out] = average(ch1_val, ch2_val, count, ready_in)
     ready_out = false;
     outbin = int16(0);
     outpk = 0;
-    P = {part}(ch1_val*conj(ch2_val))*(1/{Navg}); % part will be replaced by preprocessor
     if (ready_in)
         ticktock = ~ticktock;
     end
