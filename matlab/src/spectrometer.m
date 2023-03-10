@@ -26,12 +26,7 @@ function [pks, outbin, ready] = spectrometer (sample1, sample2)
     [pk2, outbin, ready] = average_instance:P2_(A2, bin, cready);
     [pkr, outbin, ready] = average_instance:P3_(X12R, bin, cready);
     [pki, outbin, ready] = average_instance:P4_(X12I, bin, cready);
-    if (ready)
-        if (outbin<10)
-        fprintf("%f %f \n",outbin,pk1);
-        end
-    end
-
+ 
     pks = [pk1,pk2,pkr,pki];
     c=c+1;
 end
