@@ -9,7 +9,7 @@ function [outpk, outbin, ready_out] = average(P, bin, ready_in)
         to2adr = int16({Nchan}/2+1);
         to1val = 0;
         to2val = 0;
-        ticktock = true;
+        ticktock = false;
     end
         
     ready_out = false;
@@ -35,7 +35,7 @@ function [outpk, outbin, ready_out] = average(P, bin, ready_in)
         buf2(to2adr) = to2val;
     else
         if (ready_in)
-            to2adr = bin/2+0.5;
+            to2adr = bin/2+1.5;
         else
             to2adr = int16({Nchan}/2+1);
         end
@@ -53,6 +53,7 @@ function [outpk, outbin, ready_out] = average(P, bin, ready_in)
     Nac = Nac - ((ready_in) & (bin == 0));
     if (Nac == 0);
         Nac = {Navg};
+        ticktock = false;
     end
 
 end
