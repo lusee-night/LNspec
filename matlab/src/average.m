@@ -15,10 +15,9 @@ function [outpk, outbin, ready_out] = average(P, count, ready_in)
     ready_out = false;
     outbin = int16(0);
     outpk = 0;
-    if (ready_in)
-        ticktock = ~ticktock;
-    end
-    
+
+    ticktock = mod(count,2);
+
     if ticktock
         if (ready_in)
             to1adr = count/2+0.5;
