@@ -24,8 +24,8 @@ while Npk<2;
     [pks, outbin, ready] = spectrometer(sample1,sample2);
 
     if ready
-        pk(:,outbin+1) = pks;
-        if outbin==1
+        pk(:,outbin+2) = pks;
+        if outbin==0
             Npk = Npk + 1;
             fprintf ('%i in the bag.\n',Npk);
         end
