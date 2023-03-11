@@ -15,12 +15,12 @@ function [outpk, outbin, ready_out] = average(P, bin, ready_in)
     ready_out = false;
     outbin = int16(0);
     outpk = 0;
-    ticktock = mod(count,2);
+    ticktock = mod(bin,2);
 
     if ticktock
         assert(mod(bin,2)==1)
         if (ready_in)
-            to1adr = bin/2+1.5;
+            to1adr = bin/2+0.5;
         else
             to1adr = int16({Nchan}/2+1);
         end
