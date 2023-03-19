@@ -10,7 +10,7 @@ Navg   = 4
 overNavg = 1/Navg
 
 base_funcs = "spectrometer weight_streamer ndx_bounce sfft".split()
-base_funcs += "spectrometer_tb read_samples correlate".split()
+base_funcs += "spectrometer_tb read_samples correlate correlate_alt".split()
 
 
 

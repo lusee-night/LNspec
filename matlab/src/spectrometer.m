@@ -20,7 +20,7 @@ function [pks, outbin, ready] = spectrometer (sample1, sample2)
     ch3_val = ch1_val;
     ch4_val = ch2_val;
     
-    [A1,A2,A3,A4,X12R,X12I,X13R,X13I,X14R,X14I,X23R,X23I,X24R,X24I,X34R,X34I] = correlate (ch1_val, ch2_val, ch3_val, ch4_val);
+    [A1,A2,A3,A4,X12R,X12I,X13R,X13I,X14R,X14I,X23R,X23I,X24R,X24I,X34R,X34I] = correlate_alt (ch1_val, ch2_val, ch3_val, ch4_val);
     
     [pk1, outbin, ready] = average_instance:P1_(A1, bin, cready);
     [pk2, outbin, ready] = average_instance:P2_(A2, bin, cready);
