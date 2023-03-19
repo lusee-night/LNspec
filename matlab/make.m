@@ -18,33 +18,19 @@ setenv('GCC', "gcc-10")
 % codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),double(0),double(0),double(0),double(0)} weight_fold_instance_1
 
 % [fixptcfg,hdlcfg] = makecfg ();
-% codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),double(0),double(0),double(0),double(0)} weight_fold_instance_2
-
-% [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft 
 % 
-[fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),true} deinterlace_instance_12
-
 % [fixptcfg,hdlcfg] = makecfg ();
-% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} noaverage_instance_P1
+% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),true} deinterlace_instance_12
 
 [fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),int16(0),true} average_instance_P1
-
-% [fixptcfg,hdlcfg] = makecfg ();
-% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average_instance_P2
-
-% [fixptcfg,hdlcfg] = makecfg ();
-% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average_instance_P3
-
-% [fixptcfg,hdlcfg] = makecfg ();
-% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true} average_instance_P4
+codegen -float2fixed fixptcfg -config hdlcfg -args {double(0),int16(0),true} average_instance_P1
 
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
-[fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),complex(0,0),complex(0,0)} correlate
+
+% [fixptcfg,hdlcfg] = makecfg ();
+% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),complex(0,0),complex(0,0)} correlate
 
 
 disp("Finished!")
