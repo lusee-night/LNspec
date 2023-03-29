@@ -1,8 +1,8 @@
-function [outpk, outbin, ready_out] = average(P, bin, ready_in)
-    persistent  Nac buf1 buf2 to1adr to2adr to1val to2val overN Nac_t ticktock;
+function [outpk, outbin, ready_out] = average(P, bin, ready_in, Navg, Psub)
+    persistent  Nac buf1 buf2 to1adr to2adr to1val to2val Nac_t ticktock;
 
     if isempty(Nac)
-        Nac = {Navg}; 
+        Nac = Navg; 
         buf1 = zeros(1,{Nchan}/2+1);
         buf2 = zeros(2,{Nchan}/2+1);
         to1adr = int16({Nchan}/2+1);
@@ -11,7 +11,7 @@ function [outpk, outbin, ready_out] = average(P, bin, ready_in)
         to2val = 0;
         ticktock = false;
     end
-        
+    
     ready_out = false;
     outbin = int16(0);
     outpk = 0;
@@ -24,7 +24,7 @@ function [outpk, outbin, ready_out] = average(P, bin, ready_in)
         else
             to1adr = int16({Nchan}/2+1);
         end
-        to1val = buf1(to1adr)+real(P);
+        to1val = buf1(to1adr)+real(P)-Psub;
         if (Nac == 1) & (ready_in)
             outpk = to1val;
             outbin = bin;
@@ -38,7 +38,7 @@ function [outpk, outbin, ready_out] = average(P, bin, ready_in)
         else
             to2adr = int16({Nchan}/2+1);
         end
-        to2val = buf2(to2adr)+real(P);
+        to2val = buf2(to2adr)+real(P)-Psub;
         value = to2val;
         if (Nac == 1) & (ready_in)
             outpk = to2val;
@@ -51,7 +51,7 @@ function [outpk, outbin, ready_out] = average(P, bin, ready_in)
 
     Nac = Nac - ((ready_in) & (bin == 0));
     if (Nac == 0);
-        Nac = {Navg};
+        Nac = Navg;
         ticktock = true;
     end
 

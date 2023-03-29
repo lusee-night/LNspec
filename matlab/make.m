@@ -2,7 +2,7 @@ clear all
 
 clean_dir();
 
-resp = system("python make.py");
+resp = system("python3 make.py");
 if (resp == 1)
     system("python3.10 make.py");
 end
@@ -23,11 +23,11 @@ setenv('GCC', "gcc-10")
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),true} deinterlace_instance_12
 
-[fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {double(0),int16(0),true} average_instance_P1
-
 % [fixptcfg,hdlcfg] = makecfg ();
-% codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
+% codegen -float2fixed fixptcfg -config hdlcfg -args {double(0),int16(0),true, 16, 0.0} average_instance_P1
+
+[fixptcfg,hdlcfg] = makecfg ();
+codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
 
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),complex(0,0),complex(0,0)} correlate
