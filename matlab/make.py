@@ -7,11 +7,12 @@ Ntaps  = 4
 Nblock = Ntaps*Nfft
 Nfold  = (Ntaps-1)*Nfft
 Navg   = 32
+Navg_Z5 = 6
 Nnotch = 16
 overNavg = 1/Navg
 
 base_funcs = "spectrometer weight_streamer ndx_bounce sfft".split()
-base_funcs += "spectrometer_tb read_samples read_samples_bin correlate".split()
+base_funcs += "spectrometer_tb read_samples read_samples_bin correlate correlate_small".split()
 
 
 
@@ -57,7 +58,7 @@ def make_get_pfb_weights_separate():
 def process_file(fromf, tof, addrepl = None):
     fromfn = f"src/{fromf}.m"
     tofn = f"{tof}.m"
-    kdic={"Nfft": Nfft, "Nchan": Nchan, "Ntaps": Ntaps, "Navg": Navg, "Nnotch": Nnotch,
+    kdic={"Nfft": Nfft, "Nchan": Nchan, "Ntaps": Ntaps, "Navg": Navg, "Navg_Z5":Navg_Z5, "Nnotch": Nnotch,
           "overNavg":overNavg, "Nblock": Nblock, "Nfold": Nfold}
     if addrepl is not None:
         for ent in addrepl.split(","):
