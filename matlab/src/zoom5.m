@@ -19,8 +19,8 @@ if isempty(fft_weight)
                         0.0 0.11755705045849463 -0.1902113032590307 0.1902113032590307 -0.11755705045849463];
     fft_weight = 5*complex(fft_weight_real, fft_weight_imag);
     count = 1;
-    work = zeros(1,8*5);
-    outbuf = zeros(1,8*5);
+    work = complex(zeros(1,8*5),zeros(1,8*5));
+    outbuf = complex(zeros(1,8*5),zeros(1,8*5));
     out_count = 0;
 end
 
@@ -45,7 +45,7 @@ if (bin<8) & ready
         if count==6
             outbuf = work;
             out_count = 8*5;
-            work = zeros(1,8*5);
+            work = complex(zeros(1,8*5),zeros(1,8*5));
             count=1;
         end
     end

@@ -27,7 +27,10 @@ setenv('GCC', "gcc-10")
 % codegen -float2fixed fixptcfg -config hdlcfg -args {double(0),int16(0),true, 16, 0.0} average_instance_P1
 
 [fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
+codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),int16(0),true} zoom5_instance_CH1
+
+% [fixptcfg,hdlcfg] = makecfg ();
+% codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
 
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),complex(0,0),complex(0,0)} correlate
@@ -86,7 +89,7 @@ function clean_dir()
     dir_list = dir('*.m');
     for i = 1 : length(dir_list)
         name = dir_list(i).name;
-        if matches(name,'make.m') | matches(name,'tb.m')== 0
+        if (matches(name,'make.m')==0 & matches(name,'tb.m')==0)
             delete(name);
         end
     end

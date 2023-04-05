@@ -17,7 +17,7 @@ N2 = length(samples2);
 pk=zeros(4,{Nchan});
 pk_z5=zeros(4,40);
 
-while Npk<5;
+while Npk<2;
     if (mod(t,5000)==0)
         fprintf ("t = %i\n",t);
     end
