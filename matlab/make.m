@@ -26,11 +26,11 @@ setenv('GCC', "gcc-10")
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {double(0),int16(0),true, 16, 0.0} average_instance_P1
 
-[fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
-
 % [fixptcfg,hdlcfg] = makecfg ();
-% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),complex(0,0),complex(0,0)} correlate
+% codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),int16(0)} spectrometer
+
+[fixptcfg,hdlcfg] = makecfg ();
+codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),complex(0,0),complex(0,0)} correlate
 
 
 disp("Finished!")
@@ -44,6 +44,34 @@ function [fixptcfg,hdlcfg] = makecfg ()
     fixptcfg.DefaultWordLength=32;
     fixptcfg.ProposeWordLengthsForDefaultFractionLength=false;
     fixptcfg.DefaultFractionLength=4;
+
+    fixptcfg.addTypeSpecification('correlate', 'A1', numerictype(0,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'A2', numerictype(0,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'A3', numerictype(0,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'A4', numerictype(0,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X12', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X13', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X14', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X23', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X24', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X34', numerictype(1,32,-16));    
+    fixptcfg.addTypeSpecification('correlate', 'X12R', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X13R', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X14R', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X23R', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X24R', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X34R', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X12I', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X13I', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X14I', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X23I', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X24I', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'X34I', numerictype(1,32,-16));
+    fixptcfg.addTypeSpecification('correlate', 'ch1_val', numerictype(1,32, 5));
+    fixptcfg.addTypeSpecification('correlate', 'ch2_val', numerictype(1,32, 5));
+    fixptcfg.addTypeSpecification('correlate', 'ch3_val', numerictype(1,32, 5));
+    fixptcfg.addTypeSpecification('correlate', 'ch4_val', numerictype(1,32, 5));
+
 
     % change settings
     %fixptcfg.LaunchNumericTypesReport = true;
