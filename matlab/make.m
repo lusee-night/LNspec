@@ -17,8 +17,8 @@ setenv('GCC', "gcc-10")
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),double(0),double(0),double(0),double(0)} weight_fold_instance_1
 
-[fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft 
+%[fixptcfg,hdlcfg] = makecfg ();
+%codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft 
 
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),true} deinterlace_instance_12
@@ -29,8 +29,8 @@ codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft
 %[fixptcfg,hdlcfg] = makecfg ();
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),int16(0),true, complex(0,0), complex(0,0),true,} average_instance_P1
 
-% [fixptcfg,hdlcfg] = makecfg ();
-% codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),int16(0),true} notch_instance_1
+[fixptcfg,hdlcfg] = makecfg ();
+codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),int16(0),true} notch_instance_1
 
 %[fixptcfg,hdlcfg] = makecfg ();
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),int16(0),true} notch_instance_1
@@ -38,7 +38,7 @@ codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft
 
 [fixptcfg,hdlcfg] = makecfg ();
 addpath('./codegen/spectrometer/fixpt')
-codegen -config hdlcfg -args {int16(0),int16(0)} spectrometer_fixpt
+codegen -config hdlcfg -args {int16(0),int16(0)} spectrometer
 
 
 disp("Finished!")
@@ -46,7 +46,7 @@ disp("Finished!")
 function [fixptcfg,hdlcfg] = makecfg ()
     % Create a 'fixpt' config with default settings
     fixptcfg = coder.config('fixpt');
-    fixptcfg.TestBenchName = 'spectrometer_tb_fixpt';
+    fixptcfg.TestBenchName = 'spectrometer_tb';
 
     fixptcfg.ProposeFractionLengthsForDefaultWordLength=true;
     fixptcfg.DefaultWordLength=32;
