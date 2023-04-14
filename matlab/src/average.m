@@ -1,5 +1,5 @@
-function [outpk, outbin, ready_out] = average(P, bin, ready_in, Navg, Psub)
-    persistent  Nac buf1 buf2 to1adr to2adr to1val to2val Nac_t ticktock;
+function [outpk, outbin, ready_out] = average(P, bin, ready_in, Navg, notch_avg)
+    persistent  Nac buf1 buf2 to1adr to2adr to1val to2val Nac_t ticktock norm;
 
     if isempty(Nac)
         Nac = Navg; 
@@ -10,6 +10,14 @@ function [outpk, outbin, ready_out] = average(P, bin, ready_in, Navg, Psub)
         to1val = 0;
         to2val = 0;
         ticktock = false;
+        % In matlab, we normalize by multiplying by the correct
+        % factor. In VHDL, we instead do division by right-shifting.
+        % For notch average, we have 1/N*sqrt(N) = 1/sqrt(N)
+        if notch_avg
+            norm = 1/sqrt(Navg);
+        else
+            norm = 1/Navg;  
+        end
     end
     
     ready_out = false;
@@ -24,9 +32,9 @@ function [outpk, outbin, ready_out] = average(P, bin, ready_in, Navg, Psub)
         else
             to1adr = int16({Nchan}/2+1);
         end
-        to1val = buf1(to1adr)+real(P)-Psub;
+        to1val = buf1(to1adr)+real(P);
         if (Nac == 1) & (ready_in)
-            outpk = to1val;
+            outpk = to1val*norm;
             outbin = bin;
             to1val = 0;
             ready_out=true;
@@ -38,10 +46,10 @@ function [outpk, outbin, ready_out] = average(P, bin, ready_in, Navg, Psub)
         else
             to2adr = int16({Nchan}/2+1);
         end
-        to2val = buf2(to2adr)+real(P)-Psub;
+        to2val = buf2(to2adr)+real(P);
         value = to2val;
         if (Nac == 1) & (ready_in)
-            outpk = to2val;
+            outpk = to2val*norm;
             outbin = bin;
             to2val = 0;
             ready_out=true;
