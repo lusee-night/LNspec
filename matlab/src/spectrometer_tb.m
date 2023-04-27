@@ -6,8 +6,10 @@ dt = 1;
 Npk = 0;
 clf;
 
-samples1 = read_samples_bin('samples/sky_pf_100.bin');
-samples2 = read_samples_bin('samples/sky_100.bin');
+%samples1 = read_samples_bin('samples/sky_pf_100.bin');
+%samples2 = read_samples_bin('samples/sky_100.bin');
+samples1 = read_samples_bin('samples/drifting_comb.bin');
+samples2 = read_samples_bin('samples/drifting_comb.bin');
 %samples1 = read_samples('samples/Raw_data_ADC_A_6MHz');
 %samples2 = read_samples('samples/Raw_data_ADC_B_1MHz');
 
@@ -19,9 +21,8 @@ while Npk<2;
         fprintf ("t = %i\n",t);
     end
     
-      sample1 = int16(samples1(mod(t,N1)+1));
-      sample2 = int16(samples2(mod(t,N2)+1));
-      
+    sample1 = int16(samples1(mod(t,N1)+1));
+    sample2 = int16(samples2(mod(t,N2)+1));
     [pks, outbin, ready] = spectrometer(sample1,sample2);
 
     if ready
@@ -54,9 +55,14 @@ fclose(fid);
 
 clf;
 
-semilogy(freq,pk1,'ro-');
+%semilogy(freq,pk1,'ro-');
+%hold on
+%semilogy(freq,pk2,'bo-');
+
+plot(freq,pk1,'ro-');
 hold on
-semilogy(freq,pk2,'bo-');
+plot(freq,pk2,'bo-');
+
 
 xlim([0 1]);
 xlabel('freq [MHz]')

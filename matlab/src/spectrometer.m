@@ -44,7 +44,7 @@ function [pks, outbin, ready] = spectrometer (sample1, sample2)
             % in VHDL we can imaging doing this as a part of the pipelined correlator
 
             A1 = A1 - A1N;
-            A2 = A2 - A2N;
+            %A2 = A2 - A2N; %debug
             A3 = A3 - A3N;
             A4 = A4 - A4N;
             
