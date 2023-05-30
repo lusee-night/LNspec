@@ -9,11 +9,11 @@ function [pks, outbin, ready] = spectrometer (sample1, sample2)
     %[w1,w2,w3,w4] = weight_streamer_alt1();
     %[w1,w2,w3,w4] = weight_streamer_alt2();
 
-    acc1 = weight_fold_instance:1_(sample1, w1, w2, w3, w4);
-    acc2 = weight_fold_instance:2_(sample2, w1, w2, w3, w4);
+    [acc1, wf_valid] = weight_fold_instance:1_(sample1, w1, w2, w3, w4);
+    [acc2, wf_valid] = weight_fold_instance:2_(sample2, w1, w2, w3, w4);
 
     val = complex(acc1,acc2);
-    [fft_val, fft_valid] = sfft(val');
+    [fft_val, fft_valid] = sfft(val', wf_valid);
     
     [ch1_val, ch2_val, bin, cready ] = deinterlace_instance:12_(fft_val, fft_valid);
     % placeholder

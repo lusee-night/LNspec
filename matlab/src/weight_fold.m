@@ -1,5 +1,5 @@
-function val_out = weight_fold (sample, w1,w2,w3,w4 )
-    persistent buf1 buf2 buf3 buf4 ndx bndx
+function [val_out, valid_out] = weight_fold (sample, w1, w2, w3, w4)
+    persistent buf1 buf2 buf3 buf4 ndx bndx icount
 
     sample = double(sample);
     if isempty(buf1)
@@ -9,6 +9,7 @@ function val_out = weight_fold (sample, w1,w2,w3,w4 )
         buf4 = zeros(1, {Nfft});
         ndx = 0;
         bndx = 0;
+        icount = ({Ntaps}-1)*{Nfft};
     end
     
     assert({Ntaps}==4);
@@ -19,6 +20,10 @@ function val_out = weight_fold (sample, w1,w2,w3,w4 )
     v4 = ramwrap_instance:{parent}_4_(ndx, sample, bndx==3);
 
     val_out = v1*w1+v2*w2+v3*w3+v4*w4;
+    if (icount>0)
+        icount = icount - 1;
+    end
+    valid_out = (icount==0);
 
     ndx = ndx + 1;
     if (ndx=={Nfft})
