@@ -14,8 +14,8 @@ setenv('GCC', "gcc-10")
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {} weight_streamer
 % 
-[fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),double(0),double(0),double(0),double(0)} weight_fold_instance_1
+%[fixptcfg,hdlcfg] = makecfg ();
+%codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),double(0),double(0),double(0),double(0)} weight_fold_instance_1
 
 % [fixptcfg,hdlcfg] = makecfg ();
 % codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0)} sfft 
@@ -32,13 +32,24 @@ codegen -float2fixed fixptcfg -config hdlcfg -args {int16(0),double(0),double(0)
 %[fixptcfg,hdlcfg] = makecfg ();
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),complex(0,0),complex(0,0)} correlate
 
+%[fixptcfg,hdlcfg] = makecfg ();
+%codegen -float2fixed fixptcfg -config hdlcfg -args {0,0, 1} cal_phaser
+
+
+%[fixptcfg,hdlcfg] = makecfg ();
+%codegen -float2fixed fixptcfg -config hdlcfg -args {0,0, 0, complex(0,0), 0, 0, false, false} cal_average_instance_C1
+
+[fixptcfg,hdlcfg] = makecfg ();
+codegen -float2fixed fixptcfg -config hdlcfg -args {0,0,0,0,0,0,  0,0,0,0,0,0,   0,0,0,0,0,0, 0,0,0,0,0,0, 0, false, 0, false} cal_process
+
 
 disp("Finished!")
 
 function [fixptcfg,hdlcfg] = makecfg ()
     % Create a 'fixpt' config with default settings
     fixptcfg = coder.config('fixpt');
-    fixptcfg.TestBenchName = 'spectrometer_tb';
+    %fixptcfg.TestBenchName = 'spectrometer_tb';
+    fixptcfg.TestBenchName = 'calibrator_tb';
 
     fixptcfg.ProposeFractionLengthsForDefaultWordLength=true;
     fixptcfg.DefaultWordLength=32;
@@ -114,7 +125,7 @@ function clean_dir()
     dir_list = dir('*.m');
     for i = 1 : length(dir_list)
         name = dir_list(i).name;
-        if (matches(name,'make.m') == 0) and (matches(name,'tb.m') == 0')
+        if (matches(name,'make.m') == 0) & (matches(name,'tb.m') == 0')
             delete(name);
         end
     end

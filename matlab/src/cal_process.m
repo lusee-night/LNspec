@@ -56,6 +56,10 @@ function [drift, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag
 
         if Nac2 == {NavgCal3}
             foutreal1 = sig_real(1,calbin);
+            %if (calbin==3)
+            %    fprintf ("here %g \n", foutreal1);
+            %end
+
             foutimag1 = sig_imag(1,calbin);
             foutreal2 = sig_real(2,calbin);
             foutimag2 = sig_imag(2,calbin);
@@ -63,15 +67,15 @@ function [drift, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag
             foutimag3 = sig_imag(3,calbin);
             foutreal4 = sig_real(4,calbin);
             foutimag4 = sig_imag(4,calbin);
-            sig_real = zeros(4,{Ncal});
-            sig_imag = zeros(4,{Ncal});
+            sig_real (:,calbin) = zeros(4,1);
+            sig_imag (:,calbin) = zeros(4,1);
             fout_ready = true;
         end
 
         if (update_drift)
             phase_drift_per_ppm = 50e3*{Nfft}/102.4e6 *(1/1e6)*2*pi;
             alpha_to_pdrift = {Navg}*phase_drift_per_ppm;
-            fprintf('cdrift = %f ->', drift/alpha_to_pdrift);
+            %fprintf('cdrift = %f ->', drift/alpha_to_pdrift);
             FDX = 0; 
             SDX = 0;
             for i=1:4
@@ -83,7 +87,7 @@ function [drift, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag
             end
 
             drift = drift + FDX/SDX;
-            fprintf('%f \n', drift/alpha_to_pdrift);
+            %fprintf('%f \n', drift/alpha_to_pdrift);
             %fprintf('%f, pwr = %f ', drift/alpha_to_pdrift, pwr);
             
             FD = zeros(1,4);
@@ -93,6 +97,6 @@ function [drift, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag
             Nac2 = Nac2+1;
             if Nac2>{NavgCal3}
                 Nac2 = 1;
-        end
+            end
     end   
 end

@@ -2,7 +2,7 @@ function [calbin, phase_cor, kar_out, tick_out, readyout, update_drift, readycal
     persistent phase Nac tick
 
     if isempty(phase)
-        phase = 0;
+        phase = 0.0;
         Nac = 1;
         tick = 1;
     end
@@ -23,8 +23,9 @@ function [calbin, phase_cor, kar_out, tick_out, readyout, update_drift, readycal
             kk = (2*calbin-1);
             kar = kk*(Nac-1); 
             kar_out = kar;
-            phase_cor = exp(complex(0,-phase*kk));
+            phase_cor = exp(complex(0,-phase*double(kk)));
             readycal = true;
+ 
             if Nac == ({NavgCal2})
                 readyout = true;
             end
@@ -38,11 +39,12 @@ function [calbin, phase_cor, kar_out, tick_out, readyout, update_drift, readycal
                 if (phase<-pi)
                     phase = phase+2*pi;
                 end
-                if Nac >{NavgCal2}
-                    Nac = 1;
+                if Nac > {NavgCal2}
                     update_drift = true;
+                    Nac = 1;
                 end
             end
+            
         end
     end
 end

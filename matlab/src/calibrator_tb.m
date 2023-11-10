@@ -28,22 +28,17 @@ for ic = 1:Ns
         [outreal2, outimag2, powertop2, powerbot2, drift_FD2, drift_SD2] = ...
             cal_average_instance:C2_(ch2_notch_real, ch2_notch_imag, calbin, phase_cor, kar, tick, readyout, readycal);
         
-        [drift, outreal1, foutimag1, foutreal2, foutimag2, fourreal3, foutimag3, foutreal4, foutimag4, fout_ready] = ...
+        [drift, foutreal1, foutimag1, foutreal2, foutimag2, fourreal3, foutimag3, foutreal4, foutimag4, fout_ready] = ...
         cal_process (outreal1, outimag1, powertop1, powerbot1, drift_FD1, drift_SD1, ...
                      outreal2, outimag2, powertop2, powerbot2, drift_FD2, drift_SD2, ...
                      outreal1, outimag1, powertop1, powerbot1, drift_FD1, drift_SD1, ...
                      outreal2, outimag2, powertop2, powerbot2, drift_FD2, drift_SD2, ...
                      calbin, readyout, drift, update_drift);
-        
+        if (fout_ready) & (calbin == 3)
+           fprintf (' %g | %g %g | %g %g\n ', foutreal1,  abs(complex(foutreal1, foutimag1)), atan2(foutimag1, foutreal1), ...
+                                         abs(complex(foutreal2, foutimag2)), atan2(foutimag2, foutreal2))
+        end
+
     end
-
-    % now simulate a bunch of empty calls
-    for jc = 1:{Nchan}
-        %[calbin, phase_cor, kar, tick, readyout, readycal] = cal_phaser (jc, drift, false);
-        %[outreal, outimag, powertop, powerbot, drift_FD, drift_SD] = cal_average(ch1_notch_real, ch1_notch_imag, calbin, phase_cor, kar, tick, readyout, readycal);
-    end
-
-
-
 end
 
