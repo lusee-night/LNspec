@@ -3,16 +3,19 @@ import math as m
 
 Nfft   = 4096
 Nchan  = Nfft // 2
+Ncal = Nchan // 4
 Ntaps  = 4
 Nblock = Ntaps*Nfft
 Nfold  = (Ntaps-1)*Nfft
-Navg   = 32
+Navg   = 16
+NavgCal2 = 64
+NavgCal3 = 10
 Nnotch = 16
 overNavg = 1/Navg
 
 base_funcs = "spectrometer weight_streamer ndx_bounce sfft".split()
-base_funcs += "spectrometer_tb read_samples read_samples_bin correlate".split()
-
+base_funcs += "spectrometer_tb read_samples read_samples_bin  correlate".split()
+base_funcs += "calibrator_tb read_notch_bin cal_phaser cal_average cal_process".split()
 
 
 def make_get_pfb_weights():
@@ -58,7 +61,8 @@ def process_file(fromf, tof, addrepl = None):
     fromfn = f"src/{fromf}.m"
     tofn = f"{tof}.m"
     kdic={"Nfft": Nfft, "Nchan": Nchan, "Ntaps": Ntaps, "Navg": Navg, "Nnotch": Nnotch,
-          "overNavg":overNavg, "Nblock": Nblock, "Nfold": Nfold}
+          "overNavg":overNavg, "Nblock": Nblock, "Nfold": Nfold, "Ncal":Ncal, "NavgCal2":NavgCal2,
+          "NavgCal3":NavgCal3}
     if addrepl is not None:
         for ent in addrepl.split(","):
             key,value = ent.split('=')

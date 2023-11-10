@@ -114,7 +114,7 @@ function clean_dir()
     dir_list = dir('*.m');
     for i = 1 : length(dir_list)
         name = dir_list(i).name;
-        if matches(name,'make.m') == 0
+        if (matches(name,'make.m') == 0) and (matches(name,'tb.m') == 0')
             delete(name);
         end
     end
