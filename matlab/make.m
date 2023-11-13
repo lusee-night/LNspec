@@ -40,7 +40,7 @@ setenv('GCC', "gcc-10")
 %codegen -float2fixed fixptcfg -config hdlcfg -args {0,0, 0, complex(0,0), 0, 0, false, false} cal_average_instance_C1
 
 [fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {0,0,0,0,0,0,  0,0,0,0,0,0,   0,0,0,0,0,0, 0,0,0,0,0,0, 0, false, 0, false} cal_process
+codegen -float2fixed fixptcfg -config hdlcfg -args {0,0,0,0,0,0,  0,0,0,0,0,0,   0,0,0,0,0,0, 0,0,0,0,0,0,  0, false, 0, false} cal_process
 
 
 disp("Finished!")

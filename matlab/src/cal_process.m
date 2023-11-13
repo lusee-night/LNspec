@@ -75,20 +75,26 @@ function [drift, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag
         if (update_drift)
             phase_drift_per_ppm = 50e3*{Nfft}/102.4e6 *(1/1e6)*2*pi;
             alpha_to_pdrift = {Navg}*phase_drift_per_ppm;
-            %fprintf('cdrift = %f ->', drift/alpha_to_pdrift);
+            fprintf('cdrift = %f ->', drift/alpha_to_pdrift);
             FDX = 0; 
             SDX = 0;
+    
             for i=1:4
                 pwr = top(i)/bot(i);
                 if pwr>10
                     FDX = FDX + FD(i);
                     SDX = SDX + SD(i);
                 end 
+                if i==1
+                    pwr1 = pwr;
+                 else if i==2
+                        pwr2 = pwr;
+                    end
+                end
             end
 
             drift = drift + FDX/SDX;
-            %fprintf('%f \n', drift/alpha_to_pdrift);
-            %fprintf('%f, pwr = %f ', drift/alpha_to_pdrift, pwr);
+            fprintf('%f, pwr = %f %f \n', drift/alpha_to_pdrift,pwr1, pwr2);
             
             FD = zeros(1,4);
             SD = zeros(1,4);

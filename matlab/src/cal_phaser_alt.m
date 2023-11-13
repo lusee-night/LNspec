@@ -1,5 +1,5 @@
 function [calbin, phase_cor, kar_out, tick_out, readyout, update_drift, readycal] = cal_phaser(bin_in, cal_drift, readyin)
-    persistent phase Nac tick
+    persistent phase Nac tick phase_st phase_mult2
 
     if isempty(phase)
         phase = 0.0;
@@ -23,12 +23,19 @@ function [calbin, phase_cor, kar_out, tick_out, readyout, update_drift, readycal
             kk = (2*calbin-1);
             kar = kk*(Nac-1); 
             kar_out = kar;
-            phase_cor = exp(complex(0,-phase*double(kk)));
             readycal = true;
+            if (calbin == 1) 
+                phase_st = exp(complex(0,-phase));
+                phase_mult2 = phase_st*phase_st;
+            else
+                phase_st = phase_st * phase_mult2; 
+            end 
+
+            phase_cor = phase_st;
             if Nac == ({NavgCal2})
                 readyout = true;
             end
-            if calbin == {Ncal}
+            if calbin == {Ncal}           
                 Nac = Nac + 1;
                 tick = tick*(-1);
                 phase = phase+cal_drift;
@@ -43,7 +50,6 @@ function [calbin, phase_cor, kar_out, tick_out, readyout, update_drift, readycal
                     Nac = 1;
                 end
             end
-            
         end
     end
 end
