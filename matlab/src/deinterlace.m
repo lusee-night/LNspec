@@ -16,7 +16,7 @@ function [ch1_val, ch2_val, bin, ready] = deinterlace(fft_val, fft_valid)
     end
 
     ch1_val = 0.5*(fft_val_b+conj(fft_val));
-    ch2_val = complex(0,-0.5)*(fft_val_b-conj(fft_val));
+    ch2_val = complex(0,+0.5)*(fft_val_b-conj(fft_val));
 
     if fft_valid
         count = count_up_instance:{parent}:over={Nfft}_(count);
