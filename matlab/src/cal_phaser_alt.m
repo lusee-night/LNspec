@@ -1,10 +1,12 @@
-function [calbin, phase_cor, kar_out, tick_out, readyout, update_drift, readycal] = cal_phaser(bin_in, cal_drift, readyin)
+function [calbin, phase_cor, kar_out, tick_out, readyout, update_drift, readycal] = cal_phaser_alt(bin_in, cal_drift, readyin)
     persistent phase Nac tick phase_st phase_mult2
 
     if isempty(phase)
         phase = 0.0;
         Nac = 1;
         tick = 1;
+        phase_st = exp(complex(0,-phase));
+        phase_mult2 = phase_st*phase_st;
     end
 
     calbin = 0;

@@ -14,6 +14,7 @@ function [drift, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag
         top = zeros(1,4);
         bot = zeros(1,4);
         Nac2 = 1;
+        pwr = 0;
     end
 
     foutreal1 = 0;
