@@ -41,5 +41,10 @@ for ic = 1:Ns
         end
 
     end
+
+
+    for jc = 1:{Nchan}
+        [calbin, phase_cor, kar, tick, readyout, update_drift, readycal] = cal_phaser_alt (jc, drift, false);
+    end
 end
 

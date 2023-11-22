@@ -32,24 +32,23 @@ setenv('GCC', "gcc-10")
 %[fixptcfg,hdlcfg] = makecfg ();
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),complex(0,0),complex(0,0)} correlate
 
-%[fixptcfg,hdlcfg] = makecfg ();
-%codegen -float2fixed fixptcfg -config hdlcfg -args {0,0, 1} cal_phaser
+[fixptcfg,hdlcfg] = makecfg ('calibrator_tb');
+codegen -float2fixed fixptcfg -config hdlcfg -args {0,0, true} cal_phaser_alt
 
 
 %[fixptcfg,hdlcfg] = makecfg ();
 %codegen -float2fixed fixptcfg -config hdlcfg -args {0,0, 0, complex(0,0), 0, 0, false, false} cal_average_instance_C1
 
-[fixptcfg,hdlcfg] = makecfg ();
-codegen -float2fixed fixptcfg -config hdlcfg -args {0,0,0,0,0,0,  0,0,0,0,0,0,   0,0,0,0,0,0, 0,0,0,0,0,0,  0, false, 0, false} cal_process
+%[fixptcfg,hdlcfg] = makecfg ();
+%codegen -float2fixed fixptcfg -config hdlcfg -args {0,0,0,0,0,0,  0,0,0,0,0,0,   0,0,0,0,0,0, 0,0,0,0,0,0,  0, false, 0, false} cal_process
 
 
 disp("Finished!")
 
-function [fixptcfg,hdlcfg] = makecfg ()
+function [fixptcfg,hdlcfg] = makecfg (testbench)
     % Create a 'fixpt' config with default settings
     fixptcfg = coder.config('fixpt');
-    %fixptcfg.TestBenchName = 'spectrometer_tb';
-    fixptcfg.TestBenchName = 'calibrator_tb';
+    fixptcfg.TestBenchName = testbench;
 
     fixptcfg.ProposeFractionLengthsForDefaultWordLength=true;
     fixptcfg.DefaultWordLength=32;
@@ -89,7 +88,7 @@ function [fixptcfg,hdlcfg] = makecfg ()
 
     % Create an 'hdl' config with default settings
     hdlcfg = coder.config('hdl');
-    hdlcfg.TestBenchName = 'spectrometer_tb';
+    hdlcfg.TestBenchName = testbench;
 
     hdlcfg.MATLABSourceComments = true;
 
