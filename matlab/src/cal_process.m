@@ -1,10 +1,10 @@
-function [drift, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag3, foutreal4, foutimag4, fout_ready] = ...
+function [drift, have_lock_out, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag3, foutreal4, foutimag4, fout_ready] = ...
         cal_process (outreal1, outimag1, powertop1, powerbot1, drift_FD1, drift_SD1, ...
                      outreal2, outimag2, powertop2, powerbot2, drift_FD2, drift_SD2, ...
                      outreal3, outimag3, powertop3, powerbot3, drift_FD3, drift_SD3, ...
                      outreal4, outimag4, powertop4, powerbot4, drift_FD4, drift_SD4, ...
                      calbin, readyout, drift, update_drift)
-    persistent FD SD top bot sig_real sig_imag Nac2
+    persistent FD SD top bot sig_real sig_imag Nac2 have_lock
 
     if isempty(FD)
         FD = zeros(1,4);
@@ -15,6 +15,7 @@ function [drift, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag
         bot = zeros(1,4);
         Nac2 = 1;
         pwr = 0;
+        have_lock = false;
     end
 
     foutreal1 = 0;
@@ -26,6 +27,7 @@ function [drift, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag
     foutreal4 = 0;
     foutimag4 = 0;
     fout_ready = false;
+    have_lock_out = have_lock;
 
     if readyout
         FD(1) = FD(1) + drift_FD1;
@@ -57,10 +59,6 @@ function [drift, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag
 
         if Nac2 == {NavgCal3}
             foutreal1 = sig_real(1,calbin);
-            %if (calbin==3)
-            %    fprintf ("here %g \n", foutreal1);
-            %end
-
             foutimag1 = sig_imag(1,calbin);
             foutreal2 = sig_real(2,calbin);
             foutimag2 = sig_imag(2,calbin);
@@ -93,9 +91,24 @@ function [drift, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag
                     end
                 end
             end
+            have_lock = false;
+            delta_drift = FDX/SDX;
+            if (SDX<0) & (abs(delta_drift)<0.05*alpha_to_pdrift)
+                    have_lock = true;
+            else
+                delta_drift = 0.05*alpha_to_pdrift;
+            end
 
-            drift = drift + FDX/SDX;
-            fprintf('%f, pwr = %f %f \n', drift/alpha_to_pdrift,pwr1, pwr2);
+            drift = drift + delta_drift;
+            if (drift>1.2*alpha_to_pdrift)
+                drift = -1.2*alpha_to_pdrift;
+            end
+            if (drift<-1.2*alpha_to_pdrift)
+                drift = +1.2*alpha_to_pdrift;
+            end
+
+            
+            fprintf('%f (%i), pwr = %f %f \n', drift/alpha_to_pdrift,have_lock, pwr1, pwr2);
             
             FD = zeros(1,4);
             SD = zeros(1,4);
