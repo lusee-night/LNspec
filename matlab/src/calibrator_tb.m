@@ -1,12 +1,19 @@
 clear all;
+use_ramp = true
 
-fprintf("reading data\n")
-notch_data = read_notch_bin('samples/notch_03.bin',6400);
-Ns = size(notch_data,1);
-fprintf('Ns = %d\n', Ns);
+if use_ramp
+    ramp_pfb_set;
+    Ns=4000
+else
+    fprintf("reading data\n")
+    notch_data = read_notch_bin('samples/notch_03.bin',6400);
+    Ns = size(notch_data,1);
+    fprintf('Ns = %d\n', Ns);
+end
+
 phase_drift_per_ppm = 50e3*{Nfft}/102.4e6 *(1/1e6)*2*pi;
 alpha_to_pdrift = {Navg}*phase_drift_per_ppm;
-drift = 0.95 * alpha_to_pdrift;
+drift = 0.97 * alpha_to_pdrift;
 FD = 0;
 SD = 0;
 top = 0;
@@ -15,8 +22,13 @@ bot = 0;
 for ic = 1:Ns
     got_ready = false;
     for jc = 1:{Nchan}
-        ch1_notch_real = notch_data(ic,2*jc-1);
-        ch1_notch_imag = notch_data(ic,2*jc);
+        if use_ramp 
+            ch1_notch_real = real(ramp_pfb(jc))+randn*100;
+            ch1_notch_imag = imag(ramp_pfb(jc))+randn*100;
+        else
+            ch1_notch_real = notch_data(ic,2*jc-1);
+            ch1_notch_imag = notch_data(ic,2*jc);
+        end
         % Let ch2 be randm
         ch2_notch_real = randn;
         ch2_notch_imag = randn;

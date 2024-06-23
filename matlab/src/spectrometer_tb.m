@@ -6,8 +6,11 @@ dt = 1;
 Npk = 0;
 clf;
 
-samples1 = read_samples_bin('samples/sky_pf_100.bin');
-samples2 = read_samples_bin('samples/sky_100.bin');
+
+samples1 = ramp_samples(2048,10);
+samples2 = samples1;
+%samples1 = read_samples_bin('samples/sky_pf_100.bin');
+%samples2 = read_samples_bin('samples/sky_100.bin');
 %samples1 = read_samples_bin('samples/drifting_comb.bin');
 %samples2 = read_samples_bin('samples/drifting_comb.bin');
 %samples1 = read_samples('samples/Raw_data_ADC_A_6MHz');

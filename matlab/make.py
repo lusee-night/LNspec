@@ -14,7 +14,7 @@ Nnotch = 16
 overNavg = 1/Navg
 
 base_funcs = "spectrometer weight_streamer ndx_bounce sfft".split()
-base_funcs += "spectrometer_tb read_samples read_samples_bin  correlate".split()
+base_funcs += "spectrometer_tb read_samples read_samples_bin ramp_samples ramp_pfb_set correlate".split()
 base_funcs += "calibrator_tb read_notch_bin cal_phaser cal_phaser_alt cal_average cal_process".split()
 base_funcs += "mysin mycos".split()
 
