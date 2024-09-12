@@ -68,8 +68,7 @@ function [goutreal1, goutimag1, goutreal2, goutimag2, goutreal3, goutimag3, gout
 
         if (fout_ready)
             cur (calbin,:) = [complex(foutreal1, foutimag1), complex(foutreal2, foutimag2), complex(foutreal3, foutimag3), complex(foutreal4, foutimag4)];
-            %chwe = [corout1, corout2, corout3, corout4];
-            chwe = [ 1 0 0 0 ];
+            chwe = [corout1, corout2, corout3, corout4];
             kk = (2*calbin-1);
             prod = kk*cur(calbin,:) .* chwe .* conj(accum(calbin,:));
                         
