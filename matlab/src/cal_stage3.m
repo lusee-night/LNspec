@@ -28,13 +28,14 @@ function [goutreal1, goutimag1, goutreal2, goutimag2, goutreal3, goutimag3, gout
     if (calbin>0) 
 
         if (fout_ready && (state > 0))
-            fprintf ("Can't keep up\n Die.\n");
+            %D%fprintf ("Can't keep up\n Die.\n");
         end
 
         if (state==1)
 
             if (calbin == 1)             
-                phase_st = exp(complex(0,-phase));
+                %phase_st = exp(complex(0,-phase));
+                phase_st = complex(mycos(-phase),mysin(-phase));
                 phase_mult2 = phase_st*phase_st;
             else
                 phase_st = phase_st * phase_mult2;
@@ -86,7 +87,7 @@ function [goutreal1, goutimag1, goutreal2, goutimag2, goutreal3, goutimag3, gout
                 fd=0;
                 sd=0;
 
-                fprintf("GPHASE: %g\n", gphase*1e6);
+                %D%fprintf("GPHASE: %g\n", gphase*1e6);
             end
         end
 

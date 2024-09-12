@@ -32,15 +32,25 @@ setenv('GCC', "gcc-10")
 %[fixptcfg,hdlcfg] = makecfg ();
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),complex(0,0),complex(0,0)} correlate
 
-[fixptcfg,hdlcfg] = makecfg ('calibrator_tb');
-codegen -float2fixed fixptcfg -config hdlcfg -args {0,0, true} cal_phaser_alt
+%[fixptcfg,hdlcfg] = makecfg ('calibrator_tb');
+%codegen -float2fixed fixptcfg -config hdlcfg -args {0,0, true} cal_phaser_alt
 
 
 %[fixptcfg,hdlcfg] = makecfg ();
 %codegen -float2fixed fixptcfg -config hdlcfg -args {0,0, 0, complex(0,0), 0, 0, false, false} cal_average_instance_C1
 
-%[fixptcfg,hdlcfg] = makecfg ();
-%codegen -float2fixed fixptcfg -config hdlcfg -args {0,0,0,0,0,0,  0,0,0,0,0,0,   0,0,0,0,0,0, 0,0,0,0,0,0,  0, false, 0, false} cal_process
+[fixptcfg,hdlcfg] = makecfg ('calibrator_tb');
+codegen -float2fixed fixptcfg -config hdlcfg -args {0, 0,0 0,0 0,0 0,0 0,0,0,0 true} cal_stage3 
+
+
+%[fixptcfg,hdlcfg] = makecfg ('calibrator_tb');
+%codegen -float2fixed fixptcfg -config hdlcfg -args {0,0,0,0,0,0,  0,0,0,0,0,0,   0,0,0,0,0,0, 0,0,0,0,0,0,  0, false, 0, false, 0.0 } cal_process
+
+
+
+%[fixptcfg,hdlcfg] = makecfg ('calibrator_tb');
+%codegen -float2fixed fixptcfg -config hdlcfg -args {0,0, true} cal_phaser_alt
+
 
 
 disp("Finished!")
@@ -106,14 +116,14 @@ function [fixptcfg,hdlcfg] = makecfg (testbench)
     %hdlcfg.ConstantMultiplierOptimization = 'CSD';
     %hdlcfg.LoopOptimization = 'UnrollLoops';
 
-    hdlcfg.SynthesisTool = 'MicroSemi Libero SoC';
-    hdlcfg.SynthesisToolChipFamily = 'PolarFire';
-    hdlcfg.SynthesisToolDeviceName = 'MPF500TS';
-    hdlcfg.SynthesisToolPackageName = 'FCG1152';
-    hdlcfg.SynthesisToolSpeedValue = '-1';
-    hdlcfg.TargetFrequency =  150;
-    hdlcfg.SynthesizeGeneratedCode = false;
-    hdlcfg.PlaceAndRoute = false;
+    %hdlcfg.SynthesisTool = 'MicroSemi Libero SoC';
+    %hdlcfg.SynthesisToolChipFamily = 'PolarFire';
+    %hdlcfg.SynthesisToolDeviceName = 'MPF500TS';
+    %hdlcfg.SynthesisToolPackageName = 'FCG1152';
+    %hdlcfg.SynthesisToolSpeedValue = '-1';
+    %hdlcfg.TargetFrequency =  150;
+    %hdlcfg.SynthesizeGeneratedCode = false;
+    %hdlcfg.PlaceAndRoute = false;
 end
 
 function clean_dir()
