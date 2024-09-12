@@ -4,7 +4,7 @@ function [drift, have_lock_out, foutreal1, foutimag1, foutreal2, foutimag2, fout
                      outreal3, outimag3, powertop3, powerbot3, drift_FD3, drift_SD3, ...
                      outreal4, outimag4, powertop4, powerbot4, drift_FD4, drift_SD4, ...
                      calbin, readyout, drift, update_drift, weight)
-    persistent FD SD top bot sig_real sig_imag Nac2 have_lock lastcor
+    persistent FD SD top bot Nac2 have_lock lastcor
 
 
     %% user selectable settings
@@ -21,8 +21,6 @@ function [drift, have_lock_out, foutreal1, foutimag1, foutreal2, foutimag2, fout
     if isempty(FD)
         FD = zeros(1,4);
         SD = zeros(1,4);
-        sig_real = zeros(4,{Ncal});
-        sig_imag = zeros(4,{Ncal});
         top = zeros(1,4);
         bot = zeros(1,4);
         Nac2 = 1;
@@ -65,31 +63,19 @@ function [drift, have_lock_out, foutreal1, foutimag1, foutreal2, foutimag2, fout
         top(4) = top(4) + powertop4*weight;
         bot(4) = bot(4) + powerbot4*weight;
 
-        sig_real(1,calbin) = sig_real(1,calbin)+outreal1;
-        sig_imag(1,calbin) = sig_imag(1,calbin)+outimag1;
-        sig_real(2,calbin) = sig_real(2,calbin)+outreal2;
-        sig_imag(2,calbin) = sig_imag(2,calbin)+outimag2;
-        sig_real(3,calbin) = sig_real(3,calbin)+outreal3;
-        sig_imag(3,calbin) = sig_imag(3,calbin)+outimag3;
-        sig_real(4,calbin) = sig_real(4,calbin)+outreal4;
-        sig_imag(4,calbin) = sig_imag(4,calbin)+outimag4;
-
         if (have_lock==Nsettle)
-            foutreal1 = sig_real(1,calbin);
-            foutimag1 = sig_imag(1,calbin);
-            foutreal2 = sig_real(2,calbin);
-            foutimag2 = sig_imag(2,calbin);
-            foutreal3 = sig_real(3,calbin);
-            foutimag3 = sig_imag(3,calbin);
-            foutreal4 = sig_real(4,calbin);
-            foutimag4 = sig_imag(4,calbin);
+            foutreal1 = outreal1;
+            foutimag1 = outimag1;
+            foutreal2 = outreal2;
+            foutimag2 = outimag2;
+            foutreal3 = outreal3;
+            foutimag3 = outimag3;
+            foutreal4 = outreal4;
+            foutimag4 = outimag4;
             corout1 = lastcor(1);
             corout2 = lastcor(2);
             corout3 = lastcor(3);
             corout4 = lastcor(4);
-            
-            sig_real (:,calbin) = zeros(4,1);
-            sig_imag (:,calbin) = zeros(4,1);
             fout_ready = true;
         end
 

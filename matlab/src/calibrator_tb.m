@@ -24,6 +24,9 @@ SD = 0;
 top = 0;
 bot = 0;
 
+
+fileID = fopen('output.dat', 'w');
+
 for ic = 1:Ns
     got_ready = false;
     for jc = 1:{Nchan}
@@ -68,13 +71,23 @@ for ic = 1:Ns
                      outreal2, outimag2, powertop2, powerbot2, drift_FD2, drift_SD2, ...
                      calbin, readyout, drift, update_drift, weight);
 
-        [goutreal1, goutimag1, goutreal2, goutimag2, goutreal3, goutimag3, goutreal4, goutimag4, gout_ready] = ... 
-                cal_stage3 (calbin, kar, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag3, foutreal4, foutimag4, corout1, corout2, corout3, corout4, fout_ready);
-                
+        [goutreal1, goutimag1, goutreal2, goutimag2, goutreal3, goutimag3, goutreal4, goutimag4, gphase, gout_ready] = ... 
+                cal_stage3 (calbin, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag3, foutreal4, foutimag4, corout1, corout2, corout3, corout4, fout_ready);
+       
+        if gout_ready
+            fprintf(fileID, '%g %g ', goutreal1, goutimag1);
+            if calbin == {Ncal}
+                fprintf(fileID, '\n');
+            end
+        end
+
     end
 
     for jc = 1:{Nchan}
         [calbin, phase_cor, kar, tick, readyout, update_drift, readycal] = cal_phaser_alt (jc, drift, false);
     end
 end
+
+fclose(fileID);
+
 
