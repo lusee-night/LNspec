@@ -1,4 +1,4 @@
-function [drift, have_lock_out, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag3, foutreal4, foutimag4, corout1, corout2, corout3, corout4, fout_ready] = ...
+function [drift, have_lock_out, snr1, snr2, snr3, snr4, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag3, foutreal4, foutimag4, corout1, corout2, corout3, corout4, fout_ready] = ...
         cal_process (outreal1, outimag1, powertop1, powerbot1, drift_FD1, drift_SD1, ...
                      outreal2, outimag2, powertop2, powerbot2, drift_FD2, drift_SD2, ...
                      outreal3, outimag3, powertop3, powerbot3, drift_FD3, drift_SD3, ...
@@ -41,6 +41,10 @@ function [drift, have_lock_out, foutreal1, foutimag1, foutreal2, foutimag2, fout
     corout2 = 0;
     corout3 = 0;
     corout4 = 0;
+    snr1 = 0;
+    snr2 = 0;
+    snr3 = 0;
+    snr4 = 0;
     fout_ready = false;
     have_lock_out = have_lock;
 
@@ -134,10 +138,15 @@ function [drift, have_lock_out, foutreal1, foutimag1, foutreal2, foutimag2, fout
             
 
             drift = drift + delta_drift;
+            fout_ready = (fout_ready & have_lock);
             % if we hit the boundary on either end we go to the bottom (since we drift up when not in lock)
             if (abs(drift)>delta_drift_max*alpha_to_pdrift)
                 drift = -delta_drift_max*alpha_to_pdrift;
             end
+            snr1 = snrar(1);
+            snr2 = snrar(2);
+            snr3 = snrar(3);
+            snr4 = snrar(4);
 
             fprintf('%f (%i), pwr = %f %f\n', drift/alpha_to_pdrift,have_lock, snrar(1), snrar(2));
             

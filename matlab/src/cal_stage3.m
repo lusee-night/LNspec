@@ -1,4 +1,4 @@
-function [goutreal1, goutimag1, goutreal2, goutimag2, goutreal3, goutimag3, goutreal4, goutimag4, gphase, gout_ready] = cal_stage3 (calbin, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag3, foutreal4, foutimag4, corout1, corout2, corout3, corout4, fout_ready)
+function [goutreal1, goutimag1, goutreal2, goutimag2, goutreal3, goutimag3, goutreal4, goutimag4, gphase, gNacc, gout_ready] = cal_stage3 (calbin, have_lock, foutreal1, foutimag1, foutreal2, foutimag2, foutreal3, foutimag3, foutreal4, foutimag4, corout1, corout2, corout3, corout4, fout_ready)
 
     persistent state accum cur fd sd phase phase_st phase_mult2 Nacc3
 
@@ -23,6 +23,7 @@ function [goutreal1, goutimag1, goutreal2, goutimag2, goutreal3, goutimag3, gout
     goutreal4 = 0;
     goutimag4 = 0;
     gphase = 0.0;
+    gNacc = 0;
     gout_ready = false;
 
     if (calbin>0) 
@@ -30,6 +31,25 @@ function [goutreal1, goutimag1, goutreal2, goutimag2, goutreal3, goutimag3, gout
         if (fout_ready && (state > 0))
             %D%fprintf ("Can't keep up\n Die.\n");
         end
+
+
+        if ((~have_lock) & (Nacc3>0))
+            goutreal1 = real(accum(calbin,1));
+            goutimag1 = imag(accum(calbin,1));
+            goutreal2 = real(accum(calbin,2));
+            goutimag2 = imag(accum(calbin,2));
+            goutreal3 = real(accum(calbin,3));
+            goutimag3 = imag(accum(calbin,3));
+            goutreal4 = real(accum(calbin,4));
+            goutimag4 = imag(accum(calbin,4));
+            accum(calbin,:) = complex(zeros(1,4),zeros(1,4));
+            gNacc = Nacc3;
+            gout_ready = true;
+            if (calbin == {Ncal})                
+                Nacc3 = 0
+            end
+        end
+        
 
         if (state==1)
 
@@ -43,7 +63,7 @@ function [goutreal1, goutimag1, goutreal2, goutimag2, goutreal3, goutimag3, gout
             
             accum(calbin,:) = phase_st*accum(calbin,:) + cur(calbin,:);
             
-            if Nacc3 == ({NavgCal3}-1)
+            if (Nacc3 == ({NavgCal3}-1))
                 goutreal1 = real(accum(calbin,1));
                 goutimag1 = imag(accum(calbin,1));
                 goutreal2 = real(accum(calbin,2));
@@ -53,6 +73,7 @@ function [goutreal1, goutimag1, goutreal2, goutimag2, goutreal3, goutimag3, gout
                 goutreal4 = real(accum(calbin,4));
                 goutimag4 = imag(accum(calbin,4));
                 accum(calbin,:) = complex(zeros(1,4),zeros(1,4));
+                gNacc = Nacc3+1; % Nacc3 hasn't been augmeneted yet
                 gout_ready = true;
             end
 
@@ -65,9 +86,11 @@ function [goutreal1, goutimag1, goutreal2, goutimag2, goutreal3, goutimag3, gout
             end
         end 
 
+        
+
         %% there could be an else here, since as per above, we either have state>>0 OR fout_ready or None, but not both!!
 
-        if (fout_ready)
+        if (have_lock & fout_ready)
             cur (calbin,:) = [complex(foutreal1, foutimag1), complex(foutreal2, foutimag2), complex(foutreal3, foutimag3), complex(foutreal4, foutimag4)];
             chwe = [corout1, corout2, corout3, corout4];
             kk = (2*calbin-1);
