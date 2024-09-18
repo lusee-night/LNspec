@@ -32,15 +32,15 @@ setenv('GCC', "gcc-10")
 %[fixptcfg,hdlcfg] = makecfg ();
 %codegen -float2fixed fixptcfg -config hdlcfg -args {complex(0,0),complex(0,0),complex(0,0),complex(0,0)} correlate
 
+ [fixptcfg,hdlcfg] = makecfg ('calibrator_tb');
+ codegen -float2fixed fixptcfg -config hdlcfg -args {0,0, true} cal_phaser_alt
+
+
 %[fixptcfg,hdlcfg] = makecfg ('calibrator_tb');
-%codegen -float2fixed fixptcfg -config hdlcfg -args {0,0, true} cal_phaser_alt
-
-
-%[fixptcfg,hdlcfg] = makecfg ();
 %codegen -float2fixed fixptcfg -config hdlcfg -args {0,0, 0, complex(0,0), 0, 0, false, false} cal_average_instance_C1
 
-[fixptcfg,hdlcfg] = makecfg ('calibrator_tb');
-codegen -float2fixed fixptcfg -config hdlcfg -args {0, 0,0 0,0 0,0 0,0 0,0,0,0 true} cal_stage3 
+%[fixptcfg,hdlcfg] = makecfg ('calibrator_tb');
+%#codegen -float2fixed fixptcfg -config hdlcfg -args {0, 0,0 0,0 0,0 0,0 0,0,0,0 true} cal_stage3 
 
 
 %[fixptcfg,hdlcfg] = makecfg ('calibrator_tb');
@@ -61,6 +61,7 @@ function [fixptcfg,hdlcfg] = makecfg (testbench)
     fixptcfg.TestBenchName = testbench;
 
     fixptcfg.ProposeFractionLengthsForDefaultWordLength=true;
+    %fixptcfg.MaxProductWordLength=256;
     fixptcfg.DefaultWordLength=32;
     fixptcfg.ProposeWordLengthsForDefaultFractionLength=false;
     fixptcfg.DefaultFractionLength=4;

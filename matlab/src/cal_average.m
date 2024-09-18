@@ -26,7 +26,7 @@ function [outreal, outimag, powertop, powerbot, drift_FD, drift_SD] = cal_averag
             altstore (calbin) = cplx_in;
         else
             diff = (cplx_in - altstore(calbin));
-            sum0alt(calbin) =  sum0alt(calbin) + abs(diff*conj(diff));
+            sum0alt(calbin) =  sum0alt(calbin) + real(diff*conj(diff));
         end
         sum1(calbin) = sum1(calbin) + cplx_in*complex(0,kar);
         sum2(calbin) = sum2(calbin) + cplx_in*complex(-kar*kar,0);

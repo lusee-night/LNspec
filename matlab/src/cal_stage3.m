@@ -46,7 +46,7 @@ function [goutreal1, goutimag1, goutreal2, goutimag2, goutreal3, goutimag3, gout
             gNacc = Nacc3;
             gout_ready = true;
             if (calbin == {Ncal})                
-                Nacc3 = 0
+                Nacc3 = 0;
             end
         end
         
