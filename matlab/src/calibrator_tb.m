@@ -6,10 +6,10 @@ if use_ramp
     Ns=4000
 else
     fprintf("reading data\n")
-    notch_data = read_notch_bin('samples/gamow.input',10000);
-    noise_data2 = read_notch_bin('samples/gamow.noise2',10000);
-    noise_data3 = read_notch_bin('samples/gamow.noise3',10000);
-    noise_data4 = read_notch_bin('samples/gamow.noise4',10000);
+    notch_data = read_notch_bin('samples/curie.input',10000);
+    noise_data2 = read_notch_bin('samples/curie.noise2',10000);
+    noise_data3 = read_notch_bin('samples/curie.noise3',10000);
+    noise_data4 = read_notch_bin('samples/curie.noise4',10000);
     %var(noise_data2, 0, 1)
     %var(notch_data, 0, 1)
     Ns = size(notch_data,1);
