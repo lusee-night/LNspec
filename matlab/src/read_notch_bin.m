@@ -10,6 +10,6 @@ function data = read_samples_bin(fname, lines)
         data = transpose(reshape(data, (2*{Nchan}), []));
     end
     
-    data = data * 1e7; 
+    data = data * 1e5; 
     fclose(fid);
 end

@@ -8,15 +8,15 @@ Ntaps  = 4
 Nblock = Ntaps*Nfft
 Nfold  = (Ntaps-1)*Nfft
 Navg   = 16
-NavgCal2 = 64
-NavgCal3 = 10
+NavgCal2 = 32
+NavgCal3 = 8
 Nnotch = 16
 overNavg = 1/Navg
 
 base_funcs = "spectrometer weight_streamer ndx_bounce sfft".split()
 base_funcs += "spectrometer_tb read_samples read_samples_bin ramp_samples ramp_pfb_set correlate".split()
 base_funcs += "calibrator_tb read_notch_bin cal_phaser cal_phaser_alt cal_average cal_process".split()
-base_funcs += "mysin mycos".split()
+base_funcs += "mysin mycos cal_stage3".split()
 
 
 def make_get_pfb_weights():

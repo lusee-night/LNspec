@@ -18,6 +18,7 @@ function [calbin, phase_cor, kar_out, tick_out, readyout, update_drift, readycal
     readycal = false;
     update_drift = false;
     readyout = false;
+    ready_stage3 = false;
 
     %% we should have spare cycles to do cordic stuff
     
@@ -48,7 +49,7 @@ function [calbin, phase_cor, kar_out, tick_out, readyout, update_drift, readycal
             phase_cor = phase_st;
             if Nac == ({NavgCal2})
                 readyout = true;
-            end
+            end            
             if calbin == {Ncal}           
                 Nac = Nac + 1;
                 tick = tick*(-1);
